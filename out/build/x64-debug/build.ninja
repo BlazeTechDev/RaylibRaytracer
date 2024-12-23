@@ -227,7 +227,7 @@ build vendor\raylib\CMakeFiles\uninstall | ${cmake_ninja_workdir}vendor\raylib\C
 build cmake_object_order_depends_target_raylib: phony || cmake_object_order_depends_target_glfw
 
 build vendor\raylib\raylib\CMakeFiles\raylib.dir\raudio.c.obj: C_COMPILER__raylib_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\raudio.c || cmake_object_order_depends_target_raylib
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Ob0 /Od /RTC1 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -external:IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include -external:W0
   OBJECT_DIR = vendor\raylib\raylib\CMakeFiles\raylib.dir
@@ -236,7 +236,7 @@ build vendor\raylib\raylib\CMakeFiles\raylib.dir\raudio.c.obj: C_COMPILER__rayli
   TARGET_PDB = vendor\raylib\raylib\raylib.pdb
 
 build vendor\raylib\raylib\CMakeFiles\raylib.dir\rcore.c.obj: C_COMPILER__raylib_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\rcore.c || cmake_object_order_depends_target_raylib
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Ob0 /Od /RTC1 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -external:IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include -external:W0
   OBJECT_DIR = vendor\raylib\raylib\CMakeFiles\raylib.dir
@@ -245,7 +245,7 @@ build vendor\raylib\raylib\CMakeFiles\raylib.dir\rcore.c.obj: C_COMPILER__raylib
   TARGET_PDB = vendor\raylib\raylib\raylib.pdb
 
 build vendor\raylib\raylib\CMakeFiles\raylib.dir\rmodels.c.obj: C_COMPILER__raylib_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\rmodels.c || cmake_object_order_depends_target_raylib
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Ob0 /Od /RTC1 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -external:IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include -external:W0
   OBJECT_DIR = vendor\raylib\raylib\CMakeFiles\raylib.dir
@@ -254,7 +254,7 @@ build vendor\raylib\raylib\CMakeFiles\raylib.dir\rmodels.c.obj: C_COMPILER__rayl
   TARGET_PDB = vendor\raylib\raylib\raylib.pdb
 
 build vendor\raylib\raylib\CMakeFiles\raylib.dir\rshapes.c.obj: C_COMPILER__raylib_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\rshapes.c || cmake_object_order_depends_target_raylib
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Ob0 /Od /RTC1 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -external:IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include -external:W0
   OBJECT_DIR = vendor\raylib\raylib\CMakeFiles\raylib.dir
@@ -263,7 +263,7 @@ build vendor\raylib\raylib\CMakeFiles\raylib.dir\rshapes.c.obj: C_COMPILER__rayl
   TARGET_PDB = vendor\raylib\raylib\raylib.pdb
 
 build vendor\raylib\raylib\CMakeFiles\raylib.dir\rtext.c.obj: C_COMPILER__raylib_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\rtext.c || cmake_object_order_depends_target_raylib
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Ob0 /Od /RTC1 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -external:IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include -external:W0
   OBJECT_DIR = vendor\raylib\raylib\CMakeFiles\raylib.dir
@@ -272,7 +272,7 @@ build vendor\raylib\raylib\CMakeFiles\raylib.dir\rtext.c.obj: C_COMPILER__raylib
   TARGET_PDB = vendor\raylib\raylib\raylib.pdb
 
 build vendor\raylib\raylib\CMakeFiles\raylib.dir\rtextures.c.obj: C_COMPILER__raylib_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\rtextures.c || cmake_object_order_depends_target_raylib
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Ob0 /Od /RTC1 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -external:IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include -external:W0
   OBJECT_DIR = vendor\raylib\raylib\CMakeFiles\raylib.dir
@@ -281,7 +281,7 @@ build vendor\raylib\raylib\CMakeFiles\raylib.dir\rtextures.c.obj: C_COMPILER__ra
   TARGET_PDB = vendor\raylib\raylib\raylib.pdb
 
 build vendor\raylib\raylib\CMakeFiles\raylib.dir\utils.c.obj: C_COMPILER__raylib_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\utils.c || cmake_object_order_depends_target_raylib
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP -D_CRT_SECURE_NO_WARNINGS
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Ob0 /Od /RTC1 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -external:IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include -external:W0
   OBJECT_DIR = vendor\raylib\raylib\CMakeFiles\raylib.dir
@@ -782,7 +782,7 @@ build vendor\raylib\raylib\external\glfw\src\CMakeFiles\update_mappings | ${cmak
 build cmake_object_order_depends_target_RaylibRaytracer: phony || cmake_object_order_depends_target_glfw cmake_object_order_depends_target_raylib
 
 build RaylibRaytracer\CMakeFiles\RaylibRaytracer.dir\Graphics\TracingEngine.cpp.obj: CXX_COMPILER__RaylibRaytracer_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\RaylibRaytracer\Graphics\TracingEngine.cpp || cmake_object_order_depends_target_RaylibRaytracer
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Ob0 /Od /RTC1 -std:c++20 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include
   OBJECT_DIR = RaylibRaytracer\CMakeFiles\RaylibRaytracer.dir
@@ -791,7 +791,7 @@ build RaylibRaytracer\CMakeFiles\RaylibRaytracer.dir\Graphics\TracingEngine.cpp.
   TARGET_PDB = RaylibRaytracer\RaylibRaytracer.pdb
 
 build RaylibRaytracer\CMakeFiles\RaylibRaytracer.dir\RaylibRaytracer.cpp.obj: CXX_COMPILER__RaylibRaytracer_unscanned_Debug C$:\Users\Osprey\source\repos\RaylibRaytracer\RaylibRaytracer\RaylibRaytracer.cpp || cmake_object_order_depends_target_RaylibRaytracer
-  DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
+  DEFINES = -DGRAPHICS_API_OPENGL_43 -DPLATFORM_DESKTOP
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Ob0 /Od /RTC1 -std:c++20 -ZI
   INCLUDES = -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src -IC:\Users\Osprey\source\repos\RaylibRaytracer\vendor\raylib\src\external\glfw\include
   OBJECT_DIR = RaylibRaytracer\CMakeFiles\RaylibRaytracer.dir

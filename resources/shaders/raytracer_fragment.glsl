@@ -1,4 +1,4 @@
-#version 330
+#version 430
 
 in vec2 fragTexCoord;
 
@@ -30,7 +30,7 @@ struct SkyMaterial
 struct RayTracingMaterial
 {
 	vec4 color;
-	vec4 emissionColor;
+	vec4 emission;
 	float emissionStrength;
 	float smoothness;
 };
@@ -42,9 +42,6 @@ struct Sphere
 	RayTracingMaterial material;
 };
 
-#define NR_SPHERES 40  
-uniform Sphere spheres[NR_SPHERES];
-
 struct Triangle
 {
 	vec3 posA;
@@ -55,27 +52,27 @@ struct Triangle
 	vec3 normalC;
 };
 
-#define NR_MAX_TRIANGLES 10
-
-uniform Triangle triangles[NR_MAX_TRIANGLES];
-
 struct Mesh
 {
-	mat4 transform;
 	int firstTriangleIndex;
 	int numTriangles;
-	vec3 boundsMin;
-	vec3 boundsMax;
 	RayTracingMaterial material;
+	vec3 boundingMin;
+	vec3 boundingMax;
 };
 
-#define NR_MAX_MESHES 3
+layout(std430, binding = 1) readonly restrict buffer SphereBuffer {
+	Sphere spheres[];
+};
 
-uniform Mesh meshes[NR_MAX_MESHES];
+layout(std430, binding = 2) readonly restrict buffer ObjectBuffer {
+	Mesh meshes[];
+};
 
-#define NR_MAX_BOUNCES 5
-#define NR_NUM_RAYS_PER_PIXEL 5
-
+layout(std430, binding = 3) readonly restrict buffer TriangleBuffer
+{
+	Triangle triangles[];
+};
 
 uniform SkyMaterial skyMaterial;
 
@@ -163,6 +160,52 @@ HitInfo RaySphere(Ray ray, vec3 center, float radius)
 	return hitInfo;
 }
 
+bool intersectsBounds(Ray ray, vec3 boundingMin, vec3 boundingMax) {
+	// Define the slab intersection tests
+	float tMin = (boundingMin.x - ray.origin.x) / ray.direction.x;
+	float tMax = (boundingMax.x - ray.origin.x) / ray.direction.x;
+
+	// Swap tMin and tMax if necessary
+	if (tMin > tMax) {
+		float temp = tMin;
+		tMin = tMax;
+		tMax = temp;
+	}
+
+	// Repeat for the Y-axis
+	float tyMin = (boundingMin.y - ray.origin.y) / ray.direction.y;
+	float tyMax = (boundingMax.y - ray.origin.y) / ray.direction.y;
+
+	// Swap tyMin and tyMax if necessary
+	if (tyMin > tyMax) {
+		float temp = tyMin;
+		tyMin = tyMax;
+		tyMax = temp;
+	}
+
+	// Update tMin and tMax to take into account both axes
+	tMin = max(tMin, tyMin);
+	tMax = min(tMax, tyMax);
+
+	// Repeat for the Z-axis
+	float tzMin = (boundingMin.z - ray.origin.z) / ray.direction.z;
+	float tzMax = (boundingMax.z - ray.origin.z) / ray.direction.z;
+
+	// Swap tzMin and tzMax if necessary
+	if (tzMin > tzMax) {
+		float temp = tzMin;
+		tzMin = tzMax;
+		tzMax = temp;
+	}
+
+	// Update tMin and tMax to take into account all three axes
+	tMin = max(tMin, tzMin);
+	tMax = min(tMax, tzMax);
+
+	// Check if the intervals overlap
+	return tMax >= max(tMin, 0.0);
+}
+
 HitInfo CalculateRayCollision(Ray ray)
 {
 	HitInfo closestHit;
@@ -170,7 +213,7 @@ HitInfo CalculateRayCollision(Ray ray)
 
 	closestHit.distance = 100000000;
 
-	for (int i = 0; i < NR_SPHERES; i++)
+	for (int i = 0; i < spheres.length(); i++)
 	{
 		Sphere sphere = spheres[i];
 		HitInfo hitInfo = RaySphere(ray, sphere.position, sphere.radius);
@@ -182,21 +225,24 @@ HitInfo CalculateRayCollision(Ray ray)
 		}
 	}
 
-	for (int i = 0; i < NR_MAX_MESHES; i++)
+	for (int i = 0; i < meshes.length(); i++)
 	{
 		Mesh mesh = meshes[i];
 
-		for (int t = 0; t < mesh.numTriangles; t++)
+		if (intersectsBounds(ray, mesh.boundingMin, mesh.boundingMax))
 		{
-			int triIndex = mesh.firstTriangleIndex + t;
-			Triangle tri = triangles[triIndex];
-
-			HitInfo hitInfo = RayTriangle(ray, tri);
-
-			if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
+			for (int t = 0; t < mesh.numTriangles; t++)
 			{
-				closestHit = hitInfo;
-				closestHit.material = mesh.material;
+				int triIndex = mesh.firstTriangleIndex + t;
+				Triangle tri = triangles[triIndex];
+
+				HitInfo hitInfo = RayTriangle(ray, tri);
+
+				if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
+				{
+					closestHit = hitInfo;
+					closestHit.material = mesh.material;
+				}
 			}
 		}
 	}
@@ -235,34 +281,34 @@ vec3 randomHemisphereDirection(vec3 normal, inout int state)
 
 vec3 getEnvironmentLight(Ray ray)
 {
-	float skyGradientT = pow(smoothstep(0, 0.4, ray.direction.y), 0.35);
+	float skyGradientT = pow(smoothstep(0.0, 0.4, ray.direction.y), 0.35);
 	vec3 skyGradient = mix(skyMaterial.skyColorHorizon.rgb, skyMaterial.skyColorZenith.rgb, skyGradientT);
 	float sun = pow(max(0, dot(ray.direction, -skyMaterial.sunDirection)), skyMaterial.sunFocus) * skyMaterial.sunIntensity;
 
-	float groundToSkyT = smoothstep(-0.01, 0, ray.direction.y);
+	float groundToSkyT = smoothstep(-0.01, 0.0, ray.direction.y);
 	float sunMask = float(int(groundToSkyT >= 1));
 	return mix(skyMaterial.groundColor.rgb, skyGradient, groundToSkyT) + sun * sunMask * skyMaterial.sunColor.rgb;
 }
 
-vec3 trace(Ray ray, inout int rngState)
+vec3 trace(Ray ray, inout int rngState, int maxBounces)
 {
 	vec3 incomingLight = vec3(0);
 	vec3 rayColor = vec3(1);
 
 	vec3 debugNormal = vec3(0);
 
-	for (int i = 0; i <= NR_MAX_BOUNCES; i++)
+	for (int i = 0; i <= maxBounces; i++)
 	{
 		HitInfo hitInfo = CalculateRayCollision(ray);
 		if (hitInfo.didHit)
 		{
 			ray.origin = hitInfo.hitPoint;
 			vec3 specularDirection = reflect(ray.direction, hitInfo.hitNormal);
-			vec3 diffuseDirection = normalize(hitInfo.hitNormal + randomDirection(rngState));
+			vec3 diffuseDirection = normalize(hitInfo.hitNormal + randomHemisphereDirection(hitInfo.hitNormal, rngState));
 			ray.direction = mix(diffuseDirection, specularDirection, hitInfo.material.smoothness);
 
 			RayTracingMaterial material = hitInfo.material;
-			vec3 emittedLight = material.emissionColor.rgb * material.emissionStrength;
+			vec3 emittedLight = material.emission.rgb * material.emission.a;
 			
 			incomingLight += emittedLight * rayColor;
 			rayColor *= material.color.rgb;
@@ -285,16 +331,16 @@ Ray offsetRay(Ray ray, float offsetStrength, inout int rngState)
 	return ray;
 }
 
-vec3 drawFrame(Ray ray, inout int rngState)
+vec3 drawFrame(Ray ray, inout int rngState, int maxRaysPerPixel, int maxBounces)
 {
 	vec3 total = vec3(0);
 
-	for (int i = 0; i < NR_NUM_RAYS_PER_PIXEL; i++)
+	for (int i = 0; i < maxRaysPerPixel; i++)
 	{
-		total += trace(offsetRay(ray, 0.0005f, rngState), rngState);
+		total += trace(offsetRay(ray, 0.0005f, rngState), rngState, maxBounces);
 	}
 
-	return total / NR_NUM_RAYS_PER_PIXEL;
+	return total / maxRaysPerPixel;
 }
 
 void main()
@@ -315,7 +361,16 @@ void main()
 
 	int rngState = pixelIndex + numRenderedFrames * 719393;
 
-	vec3 render = drawFrame(ray, rngState);
+	vec3 render;
+
+	if (denoise)
+	{
+		render = drawFrame(ray, rngState, 5,5);
+	}
+	else
+	{
+		render = drawFrame(ray, rngState, 1, 1);
+	}
 
 	float weight = 1.0 / (numRenderedFrames + 1);
 	vec3 accumulatedAverage = vec3(1);

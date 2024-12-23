@@ -16,12 +16,8 @@
     "\\RaylibRaytracer",
     "\\RaylibRaytracer\\Graphics",
     "\\resources",
-    "\\resources\\shaders",
-    "\\vendor\\raylib",
-    "\\vendor\\raylib\\projects",
-    "\\vendor\\raylib\\projects\\VS2022",
-    "\\vendor\\raylib\\projects\\VS2022\\examples"
+    "\\resources\\shaders"
   ],
-  "SelectedNode": "\\CMakeLists.txt",
+  "SelectedNode": "\\RaylibRaytracer\\RaylibRaytracer.cpp",
   "PreviewInSolutionExplorer": false
 }

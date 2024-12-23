@@ -30,37 +30,57 @@ struct SkyMaterial
 
 struct RaytracingMaterial
 {
-	Color color;
-	Color emissionColor;
-	float emissionStrength;
-	float smoothness;
+	Vector4 color;
+	Vector4 emission;
+	Vector4 e_s_b_b;
 };
 
 struct Sphere
 {
 	Vector3 position;
 	float radius;
-	RaytracingMaterial material;
+	RaytracingMaterial mat;
 };
 
 struct Triangle
 {
 	Vector3 posA;
+	float paddingA;
 	Vector3 posB;
+	float paddingB;
 	Vector3 posC;
+	float paddingC;
 	Vector3 normalA;
+	float paddingD;
 	Vector3 normalB;
+	float paddingE;
 	Vector3 normalC;
+	float paddingF;
 };
 
 struct RaytracingMesh
 {
-	Matrix transform;
 	int firstTriangleIndex;
 	int numTriangles;
-	Vector3 boundsMin;
-	Vector3 boundsMax;
+	long long padding;
 	RaytracingMaterial material;
+	Vector4 boundingMin;
+	Vector4 boundingMax;
+};
+
+struct SphereBuffer
+{
+	Sphere spheres[3];
+};
+
+struct TriangleBuffer
+{
+	Triangle triangles[1000];
+};
+
+struct MeshBuffer
+{
+	RaytracingMesh meshes[2];
 };
 
 class TracingEngine
@@ -75,23 +95,31 @@ private:
 
 	inline static int numRenderedFrames;
 
+	inline static int sphereSSBO;
+	inline static int trianglesSSBO;
+	inline static int meshesSSBO;
+
+
+	inline static MeshBuffer meshBuffer;
+	inline static TriangleBuffer triangleBuffer;
+	inline static int totalTriangles = 0;
+	inline static int totalMeshes = 0;
+
+	inline static SphereBuffer sphereBuffer;
+
 	static Vector4 ColorToVector4(Color color);
 
 	static void UploadSpheres();
-	static void UploadSphere(Sphere* sphere, int index);
-
-	static void UploadTriangle(Triangle triangle, int triangleIndex);
-
 	static void UploadMeshes();
-	static void UploadMesh(RaytracingMesh* mesh, int index);
+	static void UploadTriangles();
 
 	static void UploadSky();
+	static void UploadSSBOS();
 
 	inline static std::vector<RaytracingMesh> meshes;
 	inline static std::vector<Triangle> triangles;
 
 public:
-	static void UploadTriangles();
 
 	inline static std::vector<Sphere> spheres;
 
@@ -105,7 +133,8 @@ public:
 
 	static void Initialize(Vector2 resolution);
 
-	static void UploadRaylibModel(Model* model, RaytracingMaterial material);
+	static void UploadRaylibModel(Model model, RaytracingMaterial material, bool indexed);
+	static void UploadStaticData();
 	static void UploadData(Camera* camera);
 	static void Render(Camera* camera);
 	static void DrawDebug(Camera* camera);
