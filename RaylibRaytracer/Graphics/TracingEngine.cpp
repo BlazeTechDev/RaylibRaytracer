@@ -36,7 +36,7 @@ void TracingEngine::Initialize(Vector2 resolution, int maxBounces, int raysPerPi
 
 	SetShaderValue(raytracingShader, tracingParams.raysPerPixel, &raysPerPixel, SHADER_UNIFORM_INT);
 	SetShaderValue(raytracingShader, tracingParams.maxBounces, &maxBounces, SHADER_UNIFORM_INT);
-	SetShaderValue(raytracingShader, tracingParams.blur, &blur, SHADER_UNIFORM_INT);
+	SetShaderValue(raytracingShader, tracingParams.blur, &blur, SHADER_UNIFORM_FLOAT);
 
 	sphereSSBO = rlLoadShaderBuffer(sizeof(SphereBuffer), NULL, RL_DYNAMIC_COPY);
 	meshesSSBO = rlLoadShaderBuffer(sizeof(MeshBuffer), NULL, RL_DYNAMIC_COPY);
@@ -94,8 +94,6 @@ void TracingEngine::UploadSpheres()
 {
 	for (size_t i = 0; i < spheres.size(); i++)
 	{
-		spheres[i].boundingMin = Vector4(spheres[i].position.x - spheres[i].radius, spheres[i].position.y - spheres[i].radius, spheres[i].position.z - spheres[i].radius);
-		spheres[i].boundingMax = Vector4(spheres[i].position.x + spheres[i].radius, spheres[i].position.y + spheres[i].radius, spheres[i].position.z + spheres[i].radius);
 		sphereBuffer.spheres[i] = spheres[i];
 	}
 }
@@ -300,10 +298,7 @@ void TracingEngine::DrawDebug(Camera* camera)
 
 	for (size_t i = 0; i < spheres.size(); i++)
 	{
-		Vector3 min = Vector3(spheres[i].boundingMin.x, spheres[i].boundingMin.y, spheres[i].boundingMin.z);
-		Vector3 max = Vector3(spheres[i].boundingMax.x, spheres[i].boundingMax.y, spheres[i].boundingMax.z);
-		Vector3 dimentions = Vector3Subtract(min, max);
-		DrawCubeWires(spheres[i].position, dimentions.x, dimentions.y, dimentions.z, RED);
+		DrawSphereWires(spheres[i].position, spheres[i].radius, 10, 10, RED);
 	}
 
 	DrawGrid(10, 1);

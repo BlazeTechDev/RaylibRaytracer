@@ -18,6 +18,7 @@ uniform bool pause;
 
 uniform int raysPerPixel;
 uniform int maxBounces;
+
 uniform float blur;
 
 struct SkyMaterial
@@ -44,8 +45,6 @@ struct Sphere
 	vec3 position;
 	float radius;
 	RayTracingMaterial material;
-	vec3 boundingMin;
-	vec3 boundingMax;
 };
 
 struct Triangle
@@ -222,16 +221,12 @@ HitInfo CalculateRayCollision(Ray ray)
 	for (int i = 0; i < spheres.length(); i++)
 	{
 		Sphere sphere = spheres[i];
-		
-		if (intersectsBounds(ray, sphere.boundingMin, sphere.boundingMax))
-		{
-			HitInfo hitInfo = RaySphere(ray, sphere.position, sphere.radius);
+		HitInfo hitInfo = RaySphere(ray, sphere.position, sphere.radius);
 
-			if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
-			{
-				closestHit = hitInfo;
-				closestHit.material = sphere.material;
-			}
+		if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
+		{
+			closestHit = hitInfo;
+			closestHit.material = sphere.material;
 		}
 	}
 

@@ -43,8 +43,6 @@ struct Sphere
 	Vector3 position;
 	float radius;
 	RaytracingMaterial mat;
-	Vector4 boundingMin;
-	Vector4 boundingMax;
 };
 
 struct Triangle

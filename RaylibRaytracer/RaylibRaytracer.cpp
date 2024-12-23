@@ -25,13 +25,13 @@ int main()
 
 	DisableCursor();
 
-	TracingEngine::Initialize(Vector2(2048, 1024), 10, 10, 0.0007f);
+	TracingEngine::Initialize(Vector2(2048, 1024), 10, 10, 0.001f);
 
 	TracingEngine::skyMaterial = SkyMaterial{ WHITE, SKYBLUE, BROWN, ORANGE, Vector3(-0.5f, -1, -0.5f), 1, 0.5 };
 
-	RaytracingMaterial red = { Vector4(1,1,1,1), Vector4(1,0,0,4), Vector4(0,0,0,0) };
-	RaytracingMaterial green = { Vector4(1,1,1,1), Vector4(0,0,1,4), Vector4(0,0,0,0) };
-	RaytracingMaterial blue = { Vector4(1,1,1,1), Vector4(0,1,0,4), Vector4(0,0,0,0) };
+	RaytracingMaterial red = { Vector4(1,1,1,1), Vector4(1,0,0,10), Vector4(0,0,0,0) };
+	RaytracingMaterial green = { Vector4(1,1,1,1), Vector4(0,0,1,10), Vector4(0,0,0,0) };
+	RaytracingMaterial blue = { Vector4(1,1,1,1), Vector4(0,1,0,10), Vector4(0,0,0,0) };
 	RaytracingMaterial white = { Vector4(1,1,1,1), Vector4(0,0,0,0), Vector4(0,0,0,0) };
 	RaytracingMaterial metal = { Vector4(1,1,1,1), Vector4(0,0,0,0), Vector4(0,1,0,0) };
 
@@ -44,8 +44,12 @@ int main()
 	TracingEngine::UploadRaylibModel(plane, { Vector4(1,1,1,1), Vector4(0,0,0,0), Vector4(0,0,0,0) }, true);
 
 	Model box = LoadModel("resources/meshes/box.obj");
-	box.transform = MatrixTranslate(0, 2, 0) * MatrixRotateY(-PI/2);
+	box.transform = MatrixTranslate(0, 2, 0) * MatrixRotateY(-PI / 2);
 	TracingEngine::UploadRaylibModel(box, metal, false);
+
+	Model monkey = LoadModel("resources/meshes/monkey.obj");
+	monkey.transform = MatrixTranslate(0, 5, 10);
+	TracingEngine::UploadRaylibModel(monkey, red, false);
 
 	TracingEngine::UploadStaticData();
 
