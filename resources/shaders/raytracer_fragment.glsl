@@ -16,6 +16,10 @@ uniform int numRenderedFrames;
 uniform bool denoise;
 uniform bool pause;
 
+uniform int raysPerPixel;
+uniform int maxBounces;
+uniform float blur;
+
 struct SkyMaterial
 {
 	vec4 skyColorZenith;
@@ -40,6 +44,8 @@ struct Sphere
 	vec3 position;
 	float radius;
 	RayTracingMaterial material;
+	vec3 boundingMin;
+	vec3 boundingMax;
 };
 
 struct Triangle
@@ -216,12 +222,16 @@ HitInfo CalculateRayCollision(Ray ray)
 	for (int i = 0; i < spheres.length(); i++)
 	{
 		Sphere sphere = spheres[i];
-		HitInfo hitInfo = RaySphere(ray, sphere.position, sphere.radius);
-
-		if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
+		
+		if (intersectsBounds(ray, sphere.boundingMin, sphere.boundingMax))
 		{
-			closestHit = hitInfo;
-			closestHit.material = sphere.material;
+			HitInfo hitInfo = RaySphere(ray, sphere.position, sphere.radius);
+
+			if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
+			{
+				closestHit = hitInfo;
+				closestHit.material = sphere.material;
+			}
 		}
 	}
 
@@ -327,7 +337,7 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 
 Ray offsetRay(Ray ray, float offsetStrength, inout int rngState)
 {
-	ray.direction += randomDirection(rngState) * offsetStrength;
+	ray.direction += normalize(randomDirection(rngState)) * offsetStrength;
 	return ray;
 }
 
@@ -337,7 +347,7 @@ vec3 drawFrame(Ray ray, inout int rngState, int maxRaysPerPixel, int maxBounces)
 
 	for (int i = 0; i < maxRaysPerPixel; i++)
 	{
-		total += trace(offsetRay(ray, 0.0005f, rngState), rngState, maxBounces);
+		total += trace(offsetRay(ray, blur, rngState), rngState, maxBounces);
 	}
 
 	return total / maxRaysPerPixel;
@@ -363,13 +373,16 @@ void main()
 
 	vec3 render;
 
-	if (denoise)
+	if (!pause)
 	{
-		render = drawFrame(ray, rngState, 5,5);
-	}
-	else
-	{
-		render = drawFrame(ray, rngState, 1, 1);
+		if (denoise)
+		{
+			render = drawFrame(ray, rngState, raysPerPixel, maxBounces);
+		}
+		else
+		{
+			render = drawFrame(ray, rngState, 1, 1);
+		}
 	}
 
 	float weight = 1.0 / (numRenderedFrames + 1);

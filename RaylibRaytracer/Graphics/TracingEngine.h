@@ -13,7 +13,10 @@ struct TracingParams
 		currentFrame,
 		previousFrame,
 		numRenderedFrames,
+		raysPerPixel,
+		maxBounces,
 		denoise,
+		blur,
 		pause;
 };
 
@@ -40,6 +43,8 @@ struct Sphere
 	Vector3 position;
 	float radius;
 	RaytracingMaterial mat;
+	Vector4 boundingMin;
+	Vector4 boundingMax;
 };
 
 struct Triangle
@@ -70,17 +75,17 @@ struct RaytracingMesh
 
 struct SphereBuffer
 {
-	Sphere spheres[3];
+	Sphere spheres[4];
 };
 
 struct TriangleBuffer
 {
-	Triangle triangles[1000];
+	Triangle triangles[10000];
 };
 
 struct MeshBuffer
 {
-	RaytracingMesh meshes[2];
+	RaytracingMesh meshes[10];
 };
 
 class TracingEngine
@@ -94,11 +99,13 @@ private:
 	inline static Vector2 resolution;
 
 	inline static int numRenderedFrames;
+	inline static int maxBounces;
+	inline static int raysPerPixel;
+	inline static float blur;
 
 	inline static int sphereSSBO;
 	inline static int trianglesSSBO;
 	inline static int meshesSSBO;
-
 
 	inline static MeshBuffer meshBuffer;
 	inline static TriangleBuffer triangleBuffer;
@@ -116,6 +123,7 @@ private:
 	static void UploadSky();
 	static void UploadSSBOS();
 
+	inline static std::vector<Model> models;
 	inline static std::vector<RaytracingMesh> meshes;
 	inline static std::vector<Triangle> triangles;
 
@@ -123,15 +131,13 @@ public:
 
 	inline static std::vector<Sphere> spheres;
 
-	inline static std::vector<Model> models;
-
 	inline static bool debug = false;
 	inline static bool denoise = false;
 	inline static bool pause = false;
 
 	inline static SkyMaterial skyMaterial;
 
-	static void Initialize(Vector2 resolution);
+	static void Initialize(Vector2 resolution, int maxBounces, int raysPerPixel, float blur);
 
 	static void UploadRaylibModel(Model model, RaytracingMaterial material, bool indexed);
 	static void UploadStaticData();

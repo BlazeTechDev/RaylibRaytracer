@@ -4,10 +4,13 @@
 #include <raymath.h>
 #include <iostream>
 
-void TracingEngine::Initialize(Vector2 resolution)
+void TracingEngine::Initialize(Vector2 resolution, int maxBounces, int raysPerPixel, float blur)
 {
 	numRenderedFrames = 0;
 	TracingEngine::resolution = resolution;
+	TracingEngine::maxBounces = maxBounces;
+	TracingEngine::raysPerPixel = raysPerPixel;
+	TracingEngine::blur = blur;
 
 	raytracingRenderTexture = LoadRenderTexture(resolution.x, resolution.y);
 	previouseFrameRenderTexture = LoadRenderTexture(resolution.x, resolution.y);
@@ -21,12 +24,19 @@ void TracingEngine::Initialize(Vector2 resolution)
 	tracingParams.resolution = GetShaderLocation(raytracingShader, "resolution");
 	tracingParams.numRenderedFrames = GetShaderLocation(raytracingShader, "numRenderedFrames");
 	tracingParams.previousFrame = GetShaderLocation(raytracingShader, "previousFrame");
+	tracingParams.raysPerPixel = GetShaderLocation(raytracingShader, "raysPerPixel");
+	tracingParams.maxBounces = GetShaderLocation(raytracingShader, "maxBounces");
 	tracingParams.denoise = GetShaderLocation(raytracingShader, "denoise");
+	tracingParams.blur = GetShaderLocation(raytracingShader, "blur");
 	tracingParams.pause = GetShaderLocation(raytracingShader, "pause");
 
 	Vector2 screenCenter = Vector2(resolution.x / 2.0f, resolution.y / 2.0f);
 	SetShaderValue(raytracingShader, tracingParams.screenCenter, &screenCenter, SHADER_UNIFORM_VEC2);
 	SetShaderValue(raytracingShader, tracingParams.resolution, &resolution, SHADER_UNIFORM_VEC2);
+
+	SetShaderValue(raytracingShader, tracingParams.raysPerPixel, &raysPerPixel, SHADER_UNIFORM_INT);
+	SetShaderValue(raytracingShader, tracingParams.maxBounces, &maxBounces, SHADER_UNIFORM_INT);
+	SetShaderValue(raytracingShader, tracingParams.blur, &blur, SHADER_UNIFORM_INT);
 
 	sphereSSBO = rlLoadShaderBuffer(sizeof(SphereBuffer), NULL, RL_DYNAMIC_COPY);
 	meshesSSBO = rlLoadShaderBuffer(sizeof(MeshBuffer), NULL, RL_DYNAMIC_COPY);
@@ -84,6 +94,8 @@ void TracingEngine::UploadSpheres()
 {
 	for (size_t i = 0; i < spheres.size(); i++)
 	{
+		spheres[i].boundingMin = Vector4(spheres[i].position.x - spheres[i].radius, spheres[i].position.y - spheres[i].radius, spheres[i].position.z - spheres[i].radius);
+		spheres[i].boundingMax = Vector4(spheres[i].position.x + spheres[i].radius, spheres[i].position.y + spheres[i].radius, spheres[i].position.z + spheres[i].radius);
 		sphereBuffer.spheres[i] = spheres[i];
 	}
 }
@@ -192,17 +204,12 @@ void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, 
 
 		TracingEngine::meshes.push_back(rmesh);
 	}
+
+	models.push_back(model);
 }
 
 void TracingEngine::UploadStaticData()
 {
-	Model cube = LoadModelFromMesh(GenMeshCylinder(1, 1, 15));
-	cube.transform = MatrixTranslate(5, 0, 0);
-	UploadRaylibModel(cube, { Vector4(1,0,1,1), Vector4(0,0,0,0), Vector4(0,0,0,0) }, false);
-
-	Model plane = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
-	UploadRaylibModel(plane, { Vector4(1,1,1,1), Vector4(0,0,0,0), Vector4(0,0,0,0) }, true);
-
 	UploadSpheres();
 	UploadMeshes();
 	UploadTriangles();
@@ -219,7 +226,10 @@ void TracingEngine::UploadData(Camera* camera)
 
 	if (denoise)
 	{
-		numRenderedFrames++;
+		if (!pause)
+		{
+			numRenderedFrames++;
+		}
 	}
 	else
 	{
@@ -274,6 +284,28 @@ void TracingEngine::DrawDebug(Camera* camera)
 {
 	BeginMode3D(static_cast<Camera3D>(*camera));
 
+	for (size_t i = 0; i < models.size(); i++)
+	{
+		Vector3 position;
+		Quaternion rotation;
+		Vector3 scale;
+		MatrixDecompose(models[i].transform, &position, &rotation, &scale);
+		for (size_t j = 0; j < models[i].meshCount; j++)
+		{
+			BoundingBox box = GetMeshBoundingBox(models[i].meshes[j]);
+			Vector3 dimentions = Vector3Subtract(box.min, box.max);
+			DrawCubeWires(position, dimentions.x, dimentions.y, dimentions.z, RED);
+		}
+	}
+
+	for (size_t i = 0; i < spheres.size(); i++)
+	{
+		Vector3 min = Vector3(spheres[i].boundingMin.x, spheres[i].boundingMin.y, spheres[i].boundingMin.z);
+		Vector3 max = Vector3(spheres[i].boundingMax.x, spheres[i].boundingMax.y, spheres[i].boundingMax.z);
+		Vector3 dimentions = Vector3Subtract(min, max);
+		DrawCubeWires(spheres[i].position, dimentions.x, dimentions.y, dimentions.z, RED);
+	}
+
 	DrawGrid(10, 1);
 
 	EndMode3D();
@@ -284,6 +316,5 @@ void TracingEngine::DrawDebug(Camera* camera)
 void TracingEngine::Unload()
 {
 	UnloadRenderTexture(raytracingRenderTexture);
-	UnloadShader(postShader);
 	UnloadShader(raytracingShader);
 }
