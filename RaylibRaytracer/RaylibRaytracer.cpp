@@ -44,6 +44,10 @@ int main()
 	monkey.transform = MatrixTranslate(0, 5, 10);
 	TracingEngine::UploadRaylibModel(monkey, red, false);
 
+	Model monkey2 = LoadModel("resources/meshes/monkey.obj");
+	monkey2.transform = MatrixTranslate(0, 5, -10);
+	TracingEngine::UploadRaylibModel(monkey2, red, false);
+
 	TracingEngine::UploadStaticData();
 
 	while (!WindowShouldClose())
@@ -62,6 +66,8 @@ int main()
 		deltaTime += GetFrameTime();
 	}
 
+	UnloadModel(monkey);
+	UnloadModel(monkey2);
 
 	TracingEngine::Unload();
 

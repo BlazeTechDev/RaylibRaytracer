@@ -61,6 +61,7 @@ struct Mesh
 {
 	int firstTriangleIndex;
 	int numTriangles;
+	int rootNodeIndex;
 	RayTracingMaterial material;
 	vec3 boundingMin;
 	vec3 boundingMax;
@@ -77,6 +78,7 @@ struct Node
 	BoundingBox bounds;
 	int triangleIndex;
 	int numTriangles;
+	int childIndex;
 };
 
 layout(std430, binding = 1) readonly restrict buffer SphereBuffer {
@@ -229,6 +231,44 @@ bool RayBoundingBox(Ray ray, vec3 boundingMin, vec3 boundingMax) {
 	return tMax >= max(tMin, 0.0);
 }
 
+HitInfo RayBVH(Ray ray, HitInfo state, int nodeOffset, RayTracingMaterial material)
+{
+	Node nodeStack[10];
+	int stackIndex = 0;
+	nodeStack[stackIndex++] = nodes[nodeOffset];
+
+	while (stackIndex > 0)
+	{
+		Node node = nodeStack[--stackIndex];
+
+		if (RayBoundingBox(ray, node.bounds.min, node.bounds.max))
+		{
+			if (node.childIndex == 0)
+			{
+				for (int t = node.triangleIndex; t < node.triangleIndex + node.numTriangles; t++)
+				{
+					Triangle tri = triangles[t];
+
+					HitInfo hitInfo = RayTriangle(ray, tri);
+
+					if (hitInfo.didHit && hitInfo.distance < state.distance)
+					{
+						state = hitInfo;
+						state.material = material;
+					}
+				}
+			}
+			else
+			{
+				nodeStack[stackIndex++] = nodes[node.childIndex + 1];
+				nodeStack[stackIndex++] = nodes[node.childIndex + 0];
+			}
+		}
+	}
+
+	return state;
+}
+
 HitInfo CalculateRayCollision(Ray ray)
 {
 	HitInfo closestHit;
@@ -247,24 +287,11 @@ HitInfo CalculateRayCollision(Ray ray)
 			closestHit.material = sphere.material;
 		}
 	}
-
-	for (int i = 0; i < nodes.length(); i++)
+	
+	for (int i = 0; i < meshes.length(); i++)
 	{
-		if (RayBoundingBox(ray, nodes[i].bounds.min, nodes[i].bounds.max))
-		{
-			for (int t = 0; t < nodes[i].numTriangles; t++)
-			{
-				int triIndex = nodes[i].triangleIndex + t;
-				Triangle tri = triangles[triIndex];
-
-				HitInfo hitInfo = RayTriangle(ray, tri);
-
-				if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
-				{
-					closestHit = hitInfo;
-				}
-			}
-		}
+		RayTracingMaterial mat = meshes[i].material;
+		closestHit = RayBVH(ray, closestHit, meshes[i].rootNodeIndex, mat);
 	}
 
 	return closestHit;

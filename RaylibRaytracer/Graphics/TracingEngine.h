@@ -65,7 +65,8 @@ struct RaytracingMesh
 {
 	int firstTriangleIndex;
 	int numTriangles;
-	long long padding;
+	int rootNodeIndex;
+	float padding;
 	RaytracingMaterial material;
 	Vector4 boundingMin;
 	Vector4 boundingMax;
@@ -84,7 +85,8 @@ struct Node
 	PaddedBoundingBox bounds;
 	int triangleIndex;
 	int numTriangles;
-	long long padding;
+	int childIndex;
+	float padding;
 };
 
 struct SphereBuffer
@@ -104,7 +106,7 @@ struct MeshBuffer
 
 struct NodeBuffer
 {
-	Node nodes[1000];
+	Node nodes[3000];
 };
 
 class TracingEngine
@@ -124,7 +126,7 @@ private:
 	inline static float blur;
 
 	inline static std::vector<Node> nodes;
-	inline static int maxDepth = 8;
+	inline static int maxDepth = 9;
 
 	inline static Node root;
 
@@ -148,7 +150,7 @@ private:
 	static Vector3 BoundingBoxCenter(PaddedBoundingBox* box);
 	static float BoundingBoxCenterOnAxis(PaddedBoundingBox* box, int axis);
 	static float TriangleCenterOnAxis(Triangle* triangle, int axis);
-	static void SplitNode(Node parent, int depth);
+	static void SplitNode(int parentIndex, int depth);
 
 	static Vector4 ColorToVector4(Color color);
 

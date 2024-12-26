@@ -80,30 +80,31 @@ float TracingEngine::TriangleCenterOnAxis(Triangle* triangle, int axis)
 	}
 }
 
-void TracingEngine::SplitNode(Node parent, int depth)
+void TracingEngine::SplitNode(int parentIndex, int depth)
 {
 	if (depth == maxDepth)
 	{
-		nodes.push_back(parent);
 		return;
 	}
 
-	Vector3 size = parent.bounds.max - parent.bounds.min;
+	nodes[parentIndex].childIndex = nodes.size();
+
+	Vector3 size = nodes[parentIndex].bounds.max - nodes[parentIndex].bounds.min;
 	int splitAxis = size.x > std::max(size.y, size.z) ? 0 : size.y > size.z ? 1 : 2;
-	float splitPos = BoundingBoxCenterOnAxis(&parent.bounds, splitAxis);
-	
-	Node childA = { .triangleIndex = parent.triangleIndex };
-	Node childB = { .triangleIndex = parent.triangleIndex };
+	float splitPos = BoundingBoxCenterOnAxis(&nodes[parentIndex].bounds, splitAxis);
 
-	childA.bounds.min = BoundingBoxCenter(&parent.bounds);
-	childA.bounds.max = BoundingBoxCenter(&parent.bounds);
+	Node childA = { .triangleIndex = nodes[parentIndex].triangleIndex };
+	Node childB = { .triangleIndex = nodes[parentIndex].triangleIndex };
 
-	childB.bounds.min = BoundingBoxCenter(&parent.bounds);
-	childB.bounds.max = BoundingBoxCenter(&parent.bounds);
+	childA.bounds.min = BoundingBoxCenter(&nodes[parentIndex].bounds);
+	childA.bounds.max = BoundingBoxCenter(&nodes[parentIndex].bounds);
 
-	for (int i = 0; i < parent.numTriangles; i++)
+	childB.bounds.min = BoundingBoxCenter(&nodes[parentIndex].bounds);
+	childB.bounds.max = BoundingBoxCenter(&nodes[parentIndex].bounds);
+
+	for (int i = 0; i < nodes[parentIndex].numTriangles; i++)
 	{
-		int triIndex = parent.triangleIndex + i;
+		int triIndex = nodes[parentIndex].triangleIndex + i;
 		bool isSideA = TriangleCenterOnAxis(&triangles[triIndex], splitAxis) < splitPos;
 		Node* child = isSideA ? &childA : &childB;
 
@@ -118,8 +119,14 @@ void TracingEngine::SplitNode(Node parent, int depth)
 		}
 	}
 
-	SplitNode(childA, depth + 1);
-	SplitNode(childB, depth + 1);
+	int childIndexA = nodes.size();
+	int childIndexB = nodes.size() + 1;
+
+	nodes.push_back(childA);
+	nodes.push_back(childB);
+
+	SplitNode(childIndexA, depth + 1);
+	SplitNode(childIndexB, depth + 1);
 }
 
 PaddedBoundingBox TracingEngine::GetMeshPaddedBoundingBox(Mesh mesh)
@@ -184,6 +191,8 @@ void TracingEngine::UploadSky()
 
 void TracingEngine::GenerateBVHS()
 {
+	int triangleOffset = 0;
+
 	for (int i = 0; i < meshes.size(); i++)
 	{
 		RaytracingMesh mesh = meshes[i];
@@ -193,7 +202,14 @@ void TracingEngine::GenerateBVHS()
 		bounds.max = Vector3(mesh.boundingMax.x, mesh.boundingMax.y, mesh.boundingMax.z);
 
 		Node root = { .bounds = bounds, .triangleIndex = mesh.firstTriangleIndex, .numTriangles = mesh.numTriangles };
-		SplitNode(root, 0);
+		
+		nodes.push_back(root);
+		
+		meshes[i].rootNodeIndex = nodes.size() - 1;
+
+		triangleOffset += mesh.numTriangles;
+
+		SplitNode(nodes.size() - 1, 0);
 	}
 
 	for (int i = 0; i < nodes.size(); i++)
@@ -333,7 +349,7 @@ void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, 
 			}
 		}
 
-		RaytracingMesh rmesh = { firstTriIndex, mesh.triangleCount, 0, material, Vector4(bounds.min.x, bounds.min.y, bounds.min.z, 0), Vector4(bounds.max.x, bounds.max.y, bounds.max.z, 0)};
+		RaytracingMesh rmesh = { firstTriIndex, mesh.triangleCount, 0, 0, material, Vector4(bounds.min.x, bounds.min.y, bounds.min.z, 0), Vector4(bounds.max.x, bounds.max.y, bounds.max.z, 0)};
 
 		TracingEngine::meshes.push_back(rmesh);
 	}
@@ -344,11 +360,11 @@ void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, 
 void TracingEngine::UploadStaticData()
 {
 	UploadSpheres();
-	UploadMeshes();
 	UploadSky();
 
 	GenerateBVHS();
 	UploadTriangles();
+	UploadMeshes();
 
 	UploadSSBOS();
 }
@@ -433,22 +449,13 @@ void TracingEngine::DrawDebug(Camera* camera)
 
 	for (size_t i = 0; i < nodes.size(); i++)
 	{
-		Vector3 dimentions = nodes[i].bounds.max - nodes[i].bounds.min;
-		DrawCubeV(BoundingBoxCenter(&nodes[i].bounds), dimentions, {255, 161, 0, 50});
-	}
-
-	for (size_t i = 0; i < models.size(); i++)
-	{
-		Vector3 position;
-		Quaternion rotation;
-		Vector3 scale;
-		MatrixDecompose(models[i].transform, &position, &rotation, &scale);
-		for (size_t j = 0; j < models[i].meshCount; j++)
+		if (nodes[i].childIndex == 0)
 		{
-			PaddedBoundingBox box = GetMeshPaddedBoundingBox(models[i].meshes[j]);
-			box.min += position;
-			box.max += position;
-			DrawDebugBounds(&box, RED);
+			DrawDebugBounds(&nodes[i].bounds, ORANGE);
+		}
+		else
+		{
+			DrawDebugBounds(&nodes[i].bounds, BLUE);
 		}
 	}
 
