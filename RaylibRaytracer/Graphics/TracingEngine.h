@@ -66,7 +66,7 @@ struct RaytracingMesh
 	int firstTriangleIndex;
 	int numTriangles;
 	int rootNodeIndex;
-	float padding;
+	int bvhDepth;
 	RaytracingMaterial material;
 	Vector4 boundingMin;
 	Vector4 boundingMax;
@@ -126,7 +126,6 @@ private:
 	inline static float blur;
 
 	inline static std::vector<Node> nodes;
-	inline static int maxDepth = 13;
 
 	inline static Node root;
 
@@ -150,7 +149,7 @@ private:
 	static Vector3 BoundingBoxCenter(PaddedBoundingBox* box);
 	static float BoundingBoxCenterOnAxis(PaddedBoundingBox* box, int axis);
 	static float TriangleCenterOnAxis(Triangle* triangle, int axis);
-	static void SplitNode(int parentIndex, int depth);
+	static void SplitNode(int parentIndex, int depth, int maxDepth);
 
 	static Vector4 ColorToVector4(Color color);
 
@@ -179,7 +178,7 @@ public:
 
 	static void Initialize(Vector2 resolution, int maxBounces, int raysPerPixel, float blur);
 
-	static void UploadRaylibModel(Model model, RaytracingMaterial material, bool indexed);
+	static void UploadRaylibModel(Model model, RaytracingMaterial material, bool indexed, int bvhDepth);
 	static void UploadStaticData();
 	static void UploadData(Camera* camera);
 	static void Render(Camera* camera);

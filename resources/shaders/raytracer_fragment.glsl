@@ -62,6 +62,7 @@ struct Mesh
 	int firstTriangleIndex;
 	int numTriangles;
 	int rootNodeIndex;
+	int bvhDepth;
 	RayTracingMaterial material;
 	vec3 boundingMin;
 	vec3 boundingMax;
@@ -328,7 +329,7 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 		if (hitInfo.didHit)
 		{
 			ray.origin = hitInfo.hitPoint;
-			vec3 specularDirection = reflect(ray.direction, hitInfo.hitNormal);
+			vec3 specularDirection = reflect(hitInfo.hitNormal, ray.direction);
 			vec3 diffuseDirection = normalize(hitInfo.hitNormal + randomHemisphereDirection(hitInfo.hitNormal, rngState));
 			ray.direction = mix(diffuseDirection, specularDirection, hitInfo.material.smoothness);
 
@@ -353,7 +354,7 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 Ray offsetRay(Ray ray, float offsetStrength, inout int rngState)
 {
 	ray.direction += normalize(randomDirection(rngState)) * offsetStrength;
-	ray.invDirection = 1 / ray.direction;
+	ray.invDirection = 1/ray.direction;
 	return ray;
 }
 

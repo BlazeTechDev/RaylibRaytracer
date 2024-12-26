@@ -80,7 +80,7 @@ float TracingEngine::TriangleCenterOnAxis(Triangle* triangle, int axis)
 	}
 }
 
-void TracingEngine::SplitNode(int parentIndex, int depth)
+void TracingEngine::SplitNode(int parentIndex, int depth, int maxDepth)
 {
 	if (depth == maxDepth)
 	{
@@ -125,8 +125,8 @@ void TracingEngine::SplitNode(int parentIndex, int depth)
 	nodes.push_back(childA);
 	nodes.push_back(childB);
 
-	SplitNode(childIndexA, depth + 1);
-	SplitNode(childIndexB, depth + 1);
+	SplitNode(childIndexA, depth + 1, maxDepth);
+	SplitNode(childIndexB, depth + 1, maxDepth);
 }
 
 PaddedBoundingBox TracingEngine::GetMeshPaddedBoundingBox(Mesh mesh)
@@ -211,7 +211,7 @@ void TracingEngine::GenerateBVHS()
 
 		triangleOffset += mesh.numTriangles;
 
-		SplitNode(nodes.size() - 1, 0);
+		SplitNode(nodes.size() - 1, 0, meshes[i].bvhDepth);
 	}
 
 	for (int i = 0; i < nodes.size(); i++)
@@ -259,7 +259,7 @@ void TracingEngine::UploadMeshes()
 	}
 }
 
-void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, bool indexed)
+void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, bool indexed, int bvhDepth)
 {
 	for (int m = 0; m < model.meshCount; m++)
 	{
@@ -351,7 +351,7 @@ void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, 
 			}
 		}
 
-		RaytracingMesh rmesh = { firstTriIndex, mesh.triangleCount, 0, 0, material, Vector4(bounds.min.x, bounds.min.y, bounds.min.z, 0), Vector4(bounds.max.x, bounds.max.y, bounds.max.z, 0)};
+		RaytracingMesh rmesh = { firstTriIndex, mesh.triangleCount, 0, bvhDepth, material, Vector4(bounds.min.x, bounds.min.y, bounds.min.z, 0), Vector4(bounds.max.x, bounds.max.y, bounds.max.z, 0)};
 
 		TracingEngine::meshes.push_back(rmesh);
 	}
@@ -462,6 +462,8 @@ void TracingEngine::DrawDebug(Camera* camera)
 	EndMode3D();
 
 	DrawFPS(10, 10);
+	DrawText(TextFormat("triangles: %i", triangles.size()), 10, 30, 20, RED);
+	DrawText(TextFormat("nodes: %i", nodes.size()), 10, 50, 20, RED);
 }
 
 void TracingEngine::Unload()
