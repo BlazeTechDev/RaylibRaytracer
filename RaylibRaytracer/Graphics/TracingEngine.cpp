@@ -144,8 +144,13 @@ void TracingEngine::GrowToInclude(PaddedBoundingBox* box, Vector3 point)
 {
 	PaddedBoundingBox temp = *box;
 
-	box->min = Vector3Min(temp.min, point);
-	box->max = Vector3Max(temp.max, point);
+	Vector3 center = BoundingBoxCenter(box);
+
+	Vector3 paddingMin = (point - center) / 2;
+	Vector3 paddingMax = (point - center) / 2;
+
+	box->min = Vector3Min(temp.min, point + paddingMin);
+	box->max = Vector3Max(temp.max, point + paddingMax);
 }
 
 void TracingEngine::GrowToIncludeTriangle(PaddedBoundingBox* box, Triangle triangle)
@@ -452,10 +457,6 @@ void TracingEngine::DrawDebug(Camera* camera)
 		if (nodes[i].childIndex == 0)
 		{
 			DrawDebugBounds(&nodes[i].bounds, ORANGE);
-		}
-		else
-		{
-			DrawDebugBounds(&nodes[i].bounds, BLUE);
 		}
 	}
 

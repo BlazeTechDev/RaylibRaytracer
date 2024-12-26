@@ -96,7 +96,7 @@ struct SphereBuffer
 
 struct TriangleBuffer
 {
-	Triangle triangles[10000];
+	Triangle triangles[50000];
 };
 
 struct MeshBuffer
@@ -106,7 +106,7 @@ struct MeshBuffer
 
 struct NodeBuffer
 {
-	Node nodes[3000];
+	Node nodes[500000];
 };
 
 class TracingEngine
@@ -126,7 +126,7 @@ private:
 	inline static float blur;
 
 	inline static std::vector<Node> nodes;
-	inline static int maxDepth = 9;
+	inline static int maxDepth = 14;
 
 	inline static Node root;
 

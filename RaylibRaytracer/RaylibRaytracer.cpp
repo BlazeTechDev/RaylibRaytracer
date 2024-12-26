@@ -38,15 +38,13 @@ int main()
 	TracingEngine::spheres.push_back({ Vector3(0, 4, 0), 0.2, red });
 	TracingEngine::spheres.push_back({ Vector3(2, 2, 0), 0.2, green });
 	TracingEngine::spheres.push_back({ Vector3(-2, 2, 0), 0.2, blue });
-	TracingEngine::spheres.push_back({ Vector3(0, 2, 0), 1.5f, metal });
 	
-	Model monkey = LoadModel("resources/meshes/monkey.obj");
-	monkey.transform = MatrixTranslate(0, 5, 10);
-	TracingEngine::UploadRaylibModel(monkey, red, false);
+	Model monkey = LoadModel("resources/meshes/stanford_dragon.obj");
+	monkey.transform = MatrixTranslate(0, 0, 4);
+	TracingEngine::UploadRaylibModel(monkey, metal, false);
 
-	Model monkey2 = LoadModel("resources/meshes/monkey.obj");
-	monkey2.transform = MatrixTranslate(0, 5, -10);
-	TracingEngine::UploadRaylibModel(monkey2, red, false);
+	Model plane = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
+	TracingEngine::UploadRaylibModel(plane, white, true);
 
 	TracingEngine::UploadStaticData();
 
@@ -66,8 +64,8 @@ int main()
 		deltaTime += GetFrameTime();
 	}
 
+	UnloadModel(plane);
 	UnloadModel(monkey);
-	UnloadModel(monkey2);
 
 	TracingEngine::Unload();
 

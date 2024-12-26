@@ -107,6 +107,7 @@ struct Ray
 {
 	vec3 origin;
 	vec3 direction;
+	vec3 invDirection;
 };
 
 struct HitInfo
@@ -185,84 +186,61 @@ HitInfo RaySphere(Ray ray, vec3 center, float radius)
 	return hitInfo;
 }
 
-bool RayBoundingBox(Ray ray, vec3 boundingMin, vec3 boundingMax) {
-	// Define the slab intersection tests
-	float tMin = (boundingMin.x - ray.origin.x) / ray.direction.x;
-	float tMax = (boundingMax.x - ray.origin.x) / ray.direction.x;
+float RayBoundingBox(Ray ray, vec3 boundingMin, vec3 boundingMax) {
+	vec3 tMin = (boundingMin - ray.origin) * ray.invDirection;
+	vec3 tMax = (boundingMax - ray.origin) * ray.invDirection;
+	vec3 t1 = min(tMin, tMax);
+	vec3 t2 = max(tMin, tMax);
+	float dstFar = min(min(t2.x, t2.y), t2.z);
+	float dstNear = max(max(t1.x, t1.y), t1.z);
 
-	// Swap tMin and tMax if necessary
-	if (tMin > tMax) {
-		float temp = tMin;
-		tMin = tMax;
-		tMax = temp;
-	}
-
-	// Repeat for the Y-axis
-	float tyMin = (boundingMin.y - ray.origin.y) / ray.direction.y;
-	float tyMax = (boundingMax.y - ray.origin.y) / ray.direction.y;
-
-	// Swap tyMin and tyMax if necessary
-	if (tyMin > tyMax) {
-		float temp = tyMin;
-		tyMin = tyMax;
-		tyMax = temp;
-	}
-
-	// Update tMin and tMax to take into account both axes
-	tMin = max(tMin, tyMin);
-	tMax = min(tMax, tyMax);
-
-	// Repeat for the Z-axis
-	float tzMin = (boundingMin.z - ray.origin.z) / ray.direction.z;
-	float tzMax = (boundingMax.z - ray.origin.z) / ray.direction.z;
-
-	// Swap tzMin and tzMax if necessary
-	if (tzMin > tzMax) {
-		float temp = tzMin;
-		tzMin = tzMax;
-		tzMax = temp;
-	}
-
-	// Update tMin and tMax to take into account all three axes
-	tMin = max(tMin, tzMin);
-	tMax = min(tMax, tzMax);
-
-	// Check if the intervals overlap
-	return tMax >= max(tMin, 0.0);
+	bool didHit = dstFar >= dstNear && dstFar > 0;
+	return didHit ? dstNear : 100000000;
 }
 
 HitInfo RayBVH(Ray ray, HitInfo state, int nodeOffset, RayTracingMaterial material)
 {
-	Node nodeStack[10];
+	int nodeStack[32];
 	int stackIndex = 0;
-	nodeStack[stackIndex++] = nodes[nodeOffset];
+	nodeStack[stackIndex++] = nodeOffset;
 
 	while (stackIndex > 0)
 	{
-		Node node = nodeStack[--stackIndex];
+		Node node = nodes[nodeStack[--stackIndex]];
 
-		if (RayBoundingBox(ray, node.bounds.min, node.bounds.max))
+		if (node.childIndex == 0)
 		{
-			if (node.childIndex == 0)
+			for (int t = node.triangleIndex; t < node.triangleIndex + node.numTriangles; t++)
 			{
-				for (int t = node.triangleIndex; t < node.triangleIndex + node.numTriangles; t++)
+				Triangle tri = triangles[t];
+
+				HitInfo hitInfo = RayTriangle(ray, tri);
+
+				if (hitInfo.didHit && hitInfo.distance < state.distance)
 				{
-					Triangle tri = triangles[t];
-
-					HitInfo hitInfo = RayTriangle(ray, tri);
-
-					if (hitInfo.didHit && hitInfo.distance < state.distance)
-					{
-						state = hitInfo;
-						state.material = material;
-					}
+					state = hitInfo;
+					state.material = material;
 				}
 			}
-			else
-			{
-				nodeStack[stackIndex++] = nodes[node.childIndex + 1];
-				nodeStack[stackIndex++] = nodes[node.childIndex + 0];
-			}
+		}
+		else
+		{
+			int childIndexA = node.childIndex + 0;
+			int childIndexB = node.childIndex + 1;
+			Node childA = nodes[childIndexA];
+			Node childB = nodes[childIndexB];
+
+			float dstA = RayBoundingBox(ray, childA.bounds.min, childA.bounds.max);
+			float dstB = RayBoundingBox(ray, childB.bounds.min, childB.bounds.max);
+
+			bool isNearestA = dstA <= dstB;
+			float dstNear = isNearestA ? dstA : dstB;
+			float dstFar = isNearestA ? dstB : dstA;
+			int childIndexNear = isNearestA ? childIndexA : childIndexB;
+			int childIndexFar = isNearestA ? childIndexB : childIndexA;
+
+			if (dstFar < state.distance) nodeStack[stackIndex++] = childIndexFar;
+			if (dstNear < state.distance) nodeStack[stackIndex++] = childIndexNear;
 		}
 	}
 
@@ -403,6 +381,7 @@ void main()
 	Ray ray;
 	ray.origin = cameraPosition;
 	ray.direction = rayDirection;
+	ray.invDirection = 1/rayDirection;
 
 	int pixelIndex = int(gl_FragCoord.y * gl_FragCoord.x);
 
