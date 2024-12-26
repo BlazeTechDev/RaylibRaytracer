@@ -16,8 +16,9 @@
     "\\RaylibRaytracer",
     "\\RaylibRaytracer\\Graphics",
     "\\resources",
+    "\\resources\\meshes",
     "\\resources\\shaders"
   ],
-  "SelectedNode": "\\RaylibRaytracer\\RaylibRaytracer.cpp",
+  "SelectedNode": "\\RaylibRaytracer\\Graphics\\TracingEngine.cpp",
   "PreviewInSolutionExplorer": false
 }

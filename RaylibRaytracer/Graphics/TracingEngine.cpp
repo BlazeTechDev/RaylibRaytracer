@@ -41,6 +41,111 @@ void TracingEngine::Initialize(Vector2 resolution, int maxBounces, int raysPerPi
 	sphereSSBO = rlLoadShaderBuffer(sizeof(SphereBuffer), NULL, RL_DYNAMIC_COPY);
 	meshesSSBO = rlLoadShaderBuffer(sizeof(MeshBuffer), NULL, RL_DYNAMIC_COPY);
 	trianglesSSBO = rlLoadShaderBuffer(sizeof(TriangleBuffer), NULL, RL_DYNAMIC_COPY);
+	nodesSSBO = rlLoadShaderBuffer(sizeof(NodeBuffer), NULL, RL_DYNAMIC_COPY);
+}
+
+Vector3 TracingEngine::TriangleCenter(Triangle* triangle)
+{
+	return (triangle->posA + triangle->posB + triangle->posC) / 3;
+}
+
+Vector3 TracingEngine::BoundingBoxCenter(PaddedBoundingBox* box)
+{
+	return (box->min + box->max) / 2;
+}
+
+float TracingEngine::BoundingBoxCenterOnAxis(PaddedBoundingBox* box, int axis)
+{
+	switch (axis)
+	{
+	case 0:
+		return BoundingBoxCenter(box).x;
+	case 1:
+		return BoundingBoxCenter(box).y;
+	case 2:
+		return BoundingBoxCenter(box).z;
+	}
+}
+
+float TracingEngine::TriangleCenterOnAxis(Triangle* triangle, int axis)
+{
+	switch (axis)
+	{
+	case 0:
+		return TriangleCenter(triangle).x;
+	case 1:
+		return TriangleCenter(triangle).y;
+	case 2:
+		return TriangleCenter(triangle).z;
+	}
+}
+
+void TracingEngine::SplitNode(Node parent, int depth)
+{
+	if (depth == maxDepth)
+	{
+		nodes.push_back(parent);
+		return;
+	}
+
+	Vector3 size = parent.bounds.max - parent.bounds.min;
+	int splitAxis = size.x > std::max(size.y, size.z) ? 0 : size.y > size.z ? 1 : 2;
+	float splitPos = BoundingBoxCenterOnAxis(&parent.bounds, splitAxis);
+	
+	Node childA = { .triangleIndex = parent.triangleIndex };
+	Node childB = { .triangleIndex = parent.triangleIndex };
+
+	childA.bounds.min = BoundingBoxCenter(&parent.bounds);
+	childA.bounds.max = BoundingBoxCenter(&parent.bounds);
+
+	childB.bounds.min = BoundingBoxCenter(&parent.bounds);
+	childB.bounds.max = BoundingBoxCenter(&parent.bounds);
+
+	for (int i = 0; i < parent.numTriangles; i++)
+	{
+		int triIndex = parent.triangleIndex + i;
+		bool isSideA = TriangleCenterOnAxis(&triangles[triIndex], splitAxis) < splitPos;
+		Node* child = isSideA ? &childA : &childB;
+
+		GrowToIncludeTriangle(&child->bounds, triangles[triIndex]);
+		child->numTriangles++;
+
+		if (isSideA)
+		{
+			int swap = child->triangleIndex + child->numTriangles - 1;
+			std::swap(triangles[triIndex], triangles[swap]);
+			childB.triangleIndex++;
+		}
+	}
+
+	SplitNode(childA, depth + 1);
+	SplitNode(childB, depth + 1);
+}
+
+PaddedBoundingBox TracingEngine::GetMeshPaddedBoundingBox(Mesh mesh)
+{
+	PaddedBoundingBox pb;
+	BoundingBox b = GetMeshBoundingBox(mesh);
+
+	pb.min = b.min;
+	pb.max = b.max;
+
+	return pb;
+}
+
+void TracingEngine::GrowToInclude(PaddedBoundingBox* box, Vector3 point)
+{
+	PaddedBoundingBox temp = *box;
+
+	box->min = Vector3Min(temp.min, point);
+	box->max = Vector3Max(temp.max, point);
+}
+
+void TracingEngine::GrowToIncludeTriangle(PaddedBoundingBox* box, Triangle triangle)
+{
+	GrowToInclude(box, triangle.posA);
+	GrowToInclude(box, triangle.posB);
+	GrowToInclude(box, triangle.posC);
 }
 
 Vector4 TracingEngine::ColorToVector4(Color color)
@@ -77,16 +182,38 @@ void TracingEngine::UploadSky()
 	SetShaderValue(raytracingShader, sunIntensityLocation, &skyMaterial.sunIntensity, SHADER_UNIFORM_FLOAT);
 }
 
+void TracingEngine::GenerateBVHS()
+{
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		RaytracingMesh mesh = meshes[i];
+
+		PaddedBoundingBox bounds{};
+		bounds.min = Vector3(mesh.boundingMin.x, mesh.boundingMin.y, mesh.boundingMin.z);
+		bounds.max = Vector3(mesh.boundingMax.x, mesh.boundingMax.y, mesh.boundingMax.z);
+
+		Node root = { .bounds = bounds, .triangleIndex = mesh.firstTriangleIndex, .numTriangles = mesh.numTriangles };
+		SplitNode(root, 0);
+	}
+
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		nodeBuffer.nodes[i] = nodes[i];
+	}
+}
+
 void TracingEngine::UploadSSBOS()
 {
 	rlUpdateShaderBuffer(sphereSSBO, &sphereBuffer, sizeof(SphereBuffer), 0);
 	rlUpdateShaderBuffer(meshesSSBO, &meshBuffer, sizeof(MeshBuffer), 0);
 	rlUpdateShaderBuffer(trianglesSSBO, &triangleBuffer, sizeof(TriangleBuffer), 0);
+	rlUpdateShaderBuffer(nodesSSBO, &nodeBuffer, sizeof(NodeBuffer), 0);
 
 	rlEnableShader(raytracingShader.id);
 	rlBindShaderBuffer(sphereSSBO, 1);
 	rlBindShaderBuffer(meshesSSBO, 2);
 	rlBindShaderBuffer(trianglesSSBO, 3);
+	rlBindShaderBuffer(nodesSSBO, 4);
 	rlDisableShader();
 }
 
@@ -119,6 +246,15 @@ void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, 
 	for (int m = 0; m < model.meshCount; m++)
 	{
 		Mesh mesh = model.meshes[m];
+
+		BoundingBox bounds = GetMeshBoundingBox(mesh);
+		Vector3 position;
+		Quaternion rotation;
+		Vector3 scale;
+		MatrixDecompose(model.transform, &position, &rotation, &scale);
+
+		bounds.min += position;
+		bounds.max += position;
 
 		int firstTriIndex = totalTriangles;
 
@@ -197,8 +333,7 @@ void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, 
 			}
 		}
 
-		BoundingBox b = GetModelBoundingBox(model);
-		RaytracingMesh rmesh = { firstTriIndex, (int)triangles.size(), 0, material, Vector4(b.min.x, b.min.y, b.min.z, 0), Vector4(b.max.x, b.max.y, b.max.z, 0)};
+		RaytracingMesh rmesh = { firstTriIndex, mesh.triangleCount, 0, material, Vector4(bounds.min.x, bounds.min.y, bounds.min.z, 0), Vector4(bounds.max.x, bounds.max.y, bounds.max.z, 0)};
 
 		TracingEngine::meshes.push_back(rmesh);
 	}
@@ -210,8 +345,11 @@ void TracingEngine::UploadStaticData()
 {
 	UploadSpheres();
 	UploadMeshes();
-	UploadTriangles();
 	UploadSky();
+
+	GenerateBVHS();
+	UploadTriangles();
+
 	UploadSSBOS();
 }
 
@@ -278,9 +416,26 @@ void TracingEngine::Render(Camera* camera)
 	EndTextureMode();
 }
 
+void TracingEngine::DrawDebugBounds(PaddedBoundingBox* box, Color color)
+{
+	Vector3 dimentions = box->max - box->min;
+	DrawCubeWires(BoundingBoxCenter(box), dimentions.x, dimentions.y, dimentions.z, color);
+}
+
 void TracingEngine::DrawDebug(Camera* camera)
 {
 	BeginMode3D(static_cast<Camera3D>(*camera));
+
+	for (size_t i = 0; i < spheres.size(); i++)
+	{
+		DrawSphereWires(spheres[i].position, spheres[i].radius, 10, 10, RED);
+	}
+
+	for (size_t i = 0; i < nodes.size(); i++)
+	{
+		Vector3 dimentions = nodes[i].bounds.max - nodes[i].bounds.min;
+		DrawCubeV(BoundingBoxCenter(&nodes[i].bounds), dimentions, {255, 161, 0, 50});
+	}
 
 	for (size_t i = 0; i < models.size(); i++)
 	{
@@ -290,15 +445,11 @@ void TracingEngine::DrawDebug(Camera* camera)
 		MatrixDecompose(models[i].transform, &position, &rotation, &scale);
 		for (size_t j = 0; j < models[i].meshCount; j++)
 		{
-			BoundingBox box = GetMeshBoundingBox(models[i].meshes[j]);
-			Vector3 dimentions = Vector3Subtract(box.min, box.max);
-			DrawCubeWires(position, dimentions.x, dimentions.y, dimentions.z, RED);
+			PaddedBoundingBox box = GetMeshPaddedBoundingBox(models[i].meshes[j]);
+			box.min += position;
+			box.max += position;
+			DrawDebugBounds(&box, RED);
 		}
-	}
-
-	for (size_t i = 0; i < spheres.size(); i++)
-	{
-		DrawSphereWires(spheres[i].position, spheres[i].radius, 10, 10, RED);
 	}
 
 	DrawGrid(10, 1);

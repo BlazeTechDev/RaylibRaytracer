@@ -66,6 +66,19 @@ struct Mesh
 	vec3 boundingMax;
 };
 
+struct BoundingBox
+{
+	vec3 min;
+	vec3 max;
+};
+
+struct Node
+{
+	BoundingBox bounds;
+	int triangleIndex;
+	int numTriangles;
+};
+
 layout(std430, binding = 1) readonly restrict buffer SphereBuffer {
 	Sphere spheres[];
 };
@@ -77,6 +90,11 @@ layout(std430, binding = 2) readonly restrict buffer ObjectBuffer {
 layout(std430, binding = 3) readonly restrict buffer TriangleBuffer
 {
 	Triangle triangles[];
+};
+
+layout(std430, binding = 4) readonly restrict buffer NodeBuffer
+{
+	Node nodes[];
 };
 
 uniform SkyMaterial skyMaterial;
@@ -165,7 +183,7 @@ HitInfo RaySphere(Ray ray, vec3 center, float radius)
 	return hitInfo;
 }
 
-bool intersectsBounds(Ray ray, vec3 boundingMin, vec3 boundingMax) {
+bool RayBoundingBox(Ray ray, vec3 boundingMin, vec3 boundingMax) {
 	// Define the slab intersection tests
 	float tMin = (boundingMin.x - ray.origin.x) / ray.direction.x;
 	float tMax = (boundingMax.x - ray.origin.x) / ray.direction.x;
@@ -230,15 +248,13 @@ HitInfo CalculateRayCollision(Ray ray)
 		}
 	}
 
-	for (int i = 0; i < meshes.length(); i++)
+	for (int i = 0; i < nodes.length(); i++)
 	{
-		Mesh mesh = meshes[i];
-
-		if (intersectsBounds(ray, mesh.boundingMin, mesh.boundingMax))
+		if (RayBoundingBox(ray, nodes[i].bounds.min, nodes[i].bounds.max))
 		{
-			for (int t = 0; t < mesh.numTriangles; t++)
+			for (int t = 0; t < nodes[i].numTriangles; t++)
 			{
-				int triIndex = mesh.firstTriangleIndex + t;
+				int triIndex = nodes[i].triangleIndex + t;
 				Triangle tri = triangles[triIndex];
 
 				HitInfo hitInfo = RayTriangle(ray, tri);
@@ -246,7 +262,6 @@ HitInfo CalculateRayCollision(Ray ray)
 				if (hitInfo.didHit && hitInfo.distance < closestHit.distance)
 				{
 					closestHit = hitInfo;
-					closestHit.material = mesh.material;
 				}
 			}
 		}
@@ -314,7 +329,7 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 
 			RayTracingMaterial material = hitInfo.material;
 			vec3 emittedLight = material.emission.rgb * material.emission.a;
-			
+
 			incomingLight += emittedLight * rayColor;
 			rayColor *= material.color.rgb;
 

@@ -71,6 +71,22 @@ struct RaytracingMesh
 	Vector4 boundingMax;
 };
 
+struct PaddedBoundingBox
+{
+	Vector3 min;
+	float padding1;
+	Vector3 max;
+	float padding2;
+};
+
+struct Node
+{
+	PaddedBoundingBox bounds;
+	int triangleIndex;
+	int numTriangles;
+	long long padding;
+};
+
 struct SphereBuffer
 {
 	Sphere spheres[4];
@@ -86,11 +102,17 @@ struct MeshBuffer
 	RaytracingMesh meshes[10];
 };
 
+struct NodeBuffer
+{
+	Node nodes[1000];
+};
+
 class TracingEngine
 {
 private:
 	inline static Shader raytracingShader;
 	inline static Shader postShader;
+
 	inline static RenderTexture2D raytracingRenderTexture;
 	inline static RenderTexture2D previouseFrameRenderTexture;
 	inline static TracingParams tracingParams;
@@ -101,18 +123,36 @@ private:
 	inline static int raysPerPixel;
 	inline static float blur;
 
+	inline static std::vector<Node> nodes;
+	inline static int maxDepth = 8;
+
+	inline static Node root;
+
 	inline static int sphereSSBO;
 	inline static int trianglesSSBO;
 	inline static int meshesSSBO;
+	inline static int nodesSSBO;
 
 	inline static MeshBuffer meshBuffer;
 	inline static TriangleBuffer triangleBuffer;
+	inline static NodeBuffer nodeBuffer;
 	inline static int totalTriangles = 0;
 	inline static int totalMeshes = 0;
 
 	inline static SphereBuffer sphereBuffer;
 
+	static PaddedBoundingBox GetMeshPaddedBoundingBox(Mesh mesh);
+	static void GrowToInclude(PaddedBoundingBox* box, Vector3 point);
+	static void GrowToIncludeTriangle(PaddedBoundingBox* box, Triangle triangle);
+	static Vector3 TriangleCenter(Triangle* trianle);
+	static Vector3 BoundingBoxCenter(PaddedBoundingBox* box);
+	static float BoundingBoxCenterOnAxis(PaddedBoundingBox* box, int axis);
+	static float TriangleCenterOnAxis(Triangle* triangle, int axis);
+	static void SplitNode(Node parent, int depth);
+
 	static Vector4 ColorToVector4(Color color);
+
+	static void GenerateBVHS();
 
 	static void UploadSpheres();
 	static void UploadMeshes();
@@ -141,6 +181,7 @@ public:
 	static void UploadStaticData();
 	static void UploadData(Camera* camera);
 	static void Render(Camera* camera);
+	static void DrawDebugBounds(PaddedBoundingBox* box, Color color);
 	static void DrawDebug(Camera* camera);
 
 	static void Unload();

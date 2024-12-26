@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\RaylibRaytracer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\Graphics\\TracingEngine.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\Graphics\\TracingEngine.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\RaylibRaytracer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:1:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -19,28 +27,43 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:resources\\shaders\\raytracer_fragment.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\Graphics\\TracingEngine.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.obj||{58961B49-13E0-48C0-9258-13CBC4D40279}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:resources\\meshes\\monkey.obj||{58961B49-13E0-48C0-9258-13CBC4D40279}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\raymath.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:vendor\\raylib\\src\\raymath.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\RaylibRaytracer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakePresets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CMakePresets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.mtl||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:resources\\meshes\\monkey.mtl||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\glad\\raytracer_fragment.glsl||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:vendor\\glad\\raytracer_fragment.glsl||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RaylibRaytracer\\RaylibRaytracer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\box.mtl||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:resources\\meshes\\box.mtl||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\include\\vector||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\box.obj||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:resources\\meshes\\box.obj||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.obj||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:resources\\meshes\\monkey.obj||{58961B49-13E0-48C0-9258-13CBC4D40279}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -52,10 +75,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.29\\Modules\\FindPackageHandleStandardArgs.cmake||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakePresets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CMakePresets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|CMake Overview Pages||{B1CAA5B0-FEB1-4350-8AB9-F895876842F2}"
@@ -80,140 +99,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "raymath.h",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\raymath.h",
-              "RelativeDocumentMoniker": "vendor\\raylib\\src\\raymath.h",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\raymath.h",
-              "RelativeToolTip": "vendor\\raylib\\src\\raymath.h",
-              "ViewState": "AgIAAAIKAAAAAAAAAAAnwA0KAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-23T22:04:26.481Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "monkey.obj",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.obj",
-              "RelativeDocumentMoniker": "resources\\meshes\\monkey.obj",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.obj",
-              "RelativeToolTip": "resources\\meshes\\monkey.obj",
-              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAENSURBVDhPjZPNDYMwDIVDxAlxYJR2hCKOSKzQEZiCaxmGIxIjtJu0B35upH4mrgCRlE8ydtLk2XFStafv\u002B8s4jm8YYjt9jDHGRguyuaoqAzslIqw3p2nKdkYkwAcLtNZdXddJ27b8g5BlmSrL8jPP8y2O45eIIYbXvs17ZC1MhAKU6Npss9vRAq1lL1WFPHIAUU9VCYl0GipQQzYBcdM0bAC\u002BKAqO94S2MRDpaJxgUsqjsz4xBsMw2GjbWDt1/IAo5uuEh63eh5mm6Y41Gh\u002BASqAIkyvaQ1nZo5H0CB9IxO/ABTLleW5HW\u002BQYvwpcSDNdTfQKRFEU0JGuFH7\u002BNtGHNHjVxPN/MuHolpRS6gsdswxexzQFmAAAAABJRU5ErkJggg==",
-              "WhenOpened": "2024-12-23T19:36:50.683Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "TracingEngine.h",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.h",
-              "RelativeDocumentMoniker": "RaylibRaytracer\\Graphics\\TracingEngine.h",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.h",
-              "RelativeToolTip": "RaylibRaytracer\\Graphics\\TracingEngine.h",
-              "ViewState": "AgIAAIAAAAAAAAAAAAAIwCwAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-20T18:04:24.98Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
               "Title": "TracingEngine.cpp",
               "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.cpp",
               "RelativeDocumentMoniker": "RaylibRaytracer\\Graphics\\TracingEngine.cpp",
               "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.cpp",
               "RelativeToolTip": "RaylibRaytracer\\Graphics\\TracingEngine.cpp",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACYAAABRAAAAAAAAAA==",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAIwGcAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-19T17:11:55.66Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "raytracer_fragment.glsl",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\shaders\\raytracer_fragment.glsl",
-              "RelativeDocumentMoniker": "resources\\shaders\\raytracer_fragment.glsl",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\shaders\\raytracer_fragment.glsl",
-              "RelativeToolTip": "resources\\shaders\\raytracer_fragment.glsl",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAMwB8AAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-19T17:10:22.114Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "RaylibRaytracer.cpp",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.cpp",
-              "RelativeDocumentMoniker": "RaylibRaytracer\\RaylibRaytracer.cpp",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.cpp",
-              "RelativeToolTip": "RaylibRaytracer\\RaylibRaytracer.cpp",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAcwCEAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-19T17:01:37.93Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "CMakePresets.json",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakePresets.json",
-              "RelativeDocumentMoniker": "CMakePresets.json",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakePresets.json",
-              "RelativeToolTip": "CMakePresets.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-12-19T20:52:29.881Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "CMakeLists.txt",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\CMakeLists.txt",
-              "RelativeDocumentMoniker": "RaylibRaytracer\\CMakeLists.txt",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\CMakeLists.txt",
-              "RelativeToolTip": "RaylibRaytracer\\CMakeLists.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2024-12-19T17:03:25.323Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "CMakeLists.txt",
               "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakeLists.txt",
               "RelativeDocumentMoniker": "CMakeLists.txt",
               "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakeLists.txt",
               "RelativeToolTip": "CMakeLists.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2024-12-20T04:33:39.549Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "WhenOpened": "2024-12-20T04:33:39.549Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "CMakeLists.txt",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\CMakeLists.txt",
-              "RelativeDocumentMoniker": "vendor\\raylib\\src\\CMakeLists.txt",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\CMakeLists.txt",
-              "RelativeToolTip": "vendor\\raylib\\src\\CMakeLists.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2024-12-23T15:22:58.422Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 7,
               "Title": "RaylibRaytracer.h",
               "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.h",
               "RelativeDocumentMoniker": "RaylibRaytracer\\RaylibRaytracer.h",
@@ -221,25 +132,108 @@
               "RelativeToolTip": "RaylibRaytracer\\RaylibRaytracer.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-19T17:08:02.763Z",
+              "WhenOpened": "2024-12-19T17:08:02.763Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "raytracer_fragment.glsl",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\glad\\raytracer_fragment.glsl",
+              "RelativeDocumentMoniker": "vendor\\glad\\raytracer_fragment.glsl",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\glad\\raytracer_fragment.glsl",
+              "RelativeToolTip": "vendor\\glad\\raytracer_fragment.glsl",
+              "ViewState": "AgIAAD4AAAAAAAAAAAArwE8AAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-19T17:10:22.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "monkey.mtl",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.mtl",
+              "RelativeDocumentMoniker": "resources\\meshes\\monkey.mtl",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.mtl",
+              "RelativeToolTip": "resources\\meshes\\monkey.mtl",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-25T22:09:20.426Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TracingEngine.h",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.h",
+              "RelativeDocumentMoniker": "RaylibRaytracer\\Graphics\\TracingEngine.h",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\Graphics\\TracingEngine.h",
+              "RelativeToolTip": "RaylibRaytracer\\Graphics\\TracingEngine.h",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAAAH4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-20T18:04:24.98Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "rlgl.h",
-              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\rlgl.h",
-              "RelativeDocumentMoniker": "vendor\\raylib\\src\\rlgl.h",
-              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\rlgl.h",
-              "RelativeToolTip": "vendor\\raylib\\src\\rlgl.h",
-              "ViewState": "AgIAAF4RAAAAAAAAAAAIwG8RAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-23T15:47:09.031Z",
-              "EditorCaption": ""
+              "DocumentIndex": 5,
+              "Title": "raytracer_fragment.glsl",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\shaders\\raytracer_fragment.glsl",
+              "RelativeDocumentMoniker": "resources\\shaders\\raytracer_fragment.glsl",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\shaders\\raytracer_fragment.glsl",
+              "RelativeToolTip": "resources\\shaders\\raytracer_fragment.glsl",
+              "ViewState": "AgIAAPEAAAAAAAAAAAAMwAoBAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-25T22:09:49.331Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CMakeLists.txt",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\CMakeLists.txt",
+              "RelativeDocumentMoniker": "RaylibRaytracer\\CMakeLists.txt",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\CMakeLists.txt",
+              "RelativeToolTip": "RaylibRaytracer\\CMakeLists.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2024-12-19T17:03:25.323Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RaylibRaytracer.cpp",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.cpp",
+              "RelativeDocumentMoniker": "RaylibRaytracer\\RaylibRaytracer.cpp",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\RaylibRaytracer\\RaylibRaytracer.cpp",
+              "RelativeToolTip": "RaylibRaytracer\\RaylibRaytracer.cpp",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAC4AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-19T17:01:37.93Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
+              "Title": "CMakePresets.json",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakePresets.json",
+              "RelativeDocumentMoniker": "CMakePresets.json",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakePresets.json",
+              "RelativeToolTip": "CMakePresets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-12-19T20:52:29.881Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "raymath.h",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\raymath.h",
+              "RelativeDocumentMoniker": "vendor\\raylib\\src\\raymath.h",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\raymath.h",
+              "RelativeToolTip": "vendor\\raylib\\src\\raymath.h",
+              "ViewState": "AgIAAFgCAAAAAAAAAAAowGMCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-23T22:04:26.481Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": ".gitignore",
               "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
@@ -247,12 +241,81 @@
               "RelativeToolTip": ".gitignore",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-23T16:17:16.477Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-23T16:17:16.477Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "monkey.obj",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.obj",
+              "RelativeDocumentMoniker": "resources\\meshes\\monkey.obj",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\monkey.obj",
+              "RelativeToolTip": "resources\\meshes\\monkey.obj",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAENSURBVDhPjZPNDYMwDIVDxAlxYJR2hCKOSKzQEZiCaxmGIxIjtJu0B35upH4mrgCRlE8ydtLk2XFStafv\u002B8s4jm8YYjt9jDHGRguyuaoqAzslIqw3p2nKdkYkwAcLtNZdXddJ27b8g5BlmSrL8jPP8y2O45eIIYbXvs17ZC1MhAKU6Npss9vRAq1lL1WFPHIAUU9VCYl0GipQQzYBcdM0bAC\u002BKAqO94S2MRDpaJxgUsqjsz4xBsMw2GjbWDt1/IAo5uuEh63eh5mm6Y41Gh\u002BASqAIkyvaQ1nZo5H0CB9IxO/ABTLleW5HW\u002BQYvwpcSDNdTfQKRFEU0JGuFH7\u002BNtGHNHjVxPN/MuHolpRS6gsdswxexzQFmAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-12-23T19:36:50.683Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "box.obj",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\box.obj",
+              "RelativeDocumentMoniker": "resources\\meshes\\box.obj",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\box.obj",
+              "RelativeToolTip": "resources\\meshes\\box.obj",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAENSURBVDhPjZPNDYMwDIVDxAlxYJR2hCKOSKzQEZiCaxmGIxIjtJu0B35upH4mrgCRlE8ydtLk2XFStafv\u002B8s4jm8YYjt9jDHGRguyuaoqAzslIqw3p2nKdkYkwAcLtNZdXddJ27b8g5BlmSrL8jPP8y2O45eIIYbXvs17ZC1MhAKU6Npss9vRAq1lL1WFPHIAUU9VCYl0GipQQzYBcdM0bAC\u002BKAqO94S2MRDpaJxgUsqjsz4xBsMw2GjbWDt1/IAo5uuEh63eh5mm6Y41Gh\u002BASqAIkyvaQ1nZo5H0CB9IxO/ABTLleW5HW\u002BQYvwpcSDNdTfQKRFEU0JGuFH7\u002BNtGHNHjVxPN/MuHolpRS6gsdswxexzQFmAAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-12-23T22:35:33.411Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 12,
+              "Title": "box.mtl",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\box.mtl",
+              "RelativeDocumentMoniker": "resources\\meshes\\box.mtl",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\resources\\meshes\\box.mtl",
+              "RelativeToolTip": "resources\\meshes\\box.mtl",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-25T19:04:12.978Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "vector",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\include\\vector",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\include\\vector",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\include\\vector",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\include\\vector",
+              "ViewState": "AgIAAFQHAAAAAAAAAAAnwF8HAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-24T18:37:57.518Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CMakeLists.txt",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\CMakeLists.txt",
+              "RelativeDocumentMoniker": "vendor\\raylib\\src\\CMakeLists.txt",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\CMakeLists.txt",
+              "RelativeToolTip": "vendor\\raylib\\src\\CMakeLists.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2024-12-23T15:22:58.422Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "rlgl.h",
+              "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\rlgl.h",
+              "RelativeDocumentMoniker": "vendor\\raylib\\src\\rlgl.h",
+              "ToolTip": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\vendor\\raylib\\src\\rlgl.h",
+              "RelativeToolTip": "vendor\\raylib\\src\\rlgl.h",
+              "ViewState": "AgIAAF4RAAAAAAAAAAAIwG8RAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-23T15:47:09.031Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
               "Title": "FindPackageHandleStandardArgs.cmake",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.29\\Modules\\FindPackageHandleStandardArgs.cmake",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.29\\Modules\\FindPackageHandleStandardArgs.cmake",
@@ -260,12 +323,11 @@
               "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.29\\Modules\\FindPackageHandleStandardArgs.cmake",
               "ViewState": "AgIAANcAAAAAAAAAAAAtwOUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-21T16:07:38.777Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-21T16:07:38.777Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 20,
               "Title": "CMakeLists.txt",
               "DocumentMoniker": "C:\\Users\\Osprey\\source\\repos\\RaylibRaytracer\\CMakeLists.txt",
               "RelativeDocumentMoniker": "CMakeLists.txt",
@@ -277,13 +339,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 19,
               "Title": "CMake Overview Pages",
               "DocumentMoniker": "CMake Overview Pages",
               "ToolTip": "CMake Overview Pages",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-19T16:58:23.744Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-19T16:58:23.744Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }

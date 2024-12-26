@@ -39,14 +39,7 @@ int main()
 	TracingEngine::spheres.push_back({ Vector3(2, 2, 0), 0.2, green });
 	TracingEngine::spheres.push_back({ Vector3(-2, 2, 0), 0.2, blue });
 	TracingEngine::spheres.push_back({ Vector3(0, 2, 0), 1.5f, metal });
-
-	Model plane = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
-	TracingEngine::UploadRaylibModel(plane, { Vector4(1,1,1,1), Vector4(0,0,0,0), Vector4(0,0,0,0) }, true);
-
-	Model box = LoadModel("resources/meshes/box.obj");
-	box.transform = MatrixTranslate(0, 2, 0) * MatrixRotateY(-PI / 2);
-	TracingEngine::UploadRaylibModel(box, metal, false);
-
+	
 	Model monkey = LoadModel("resources/meshes/monkey.obj");
 	monkey.transform = MatrixTranslate(0, 5, 10);
 	TracingEngine::UploadRaylibModel(monkey, red, false);
@@ -56,6 +49,7 @@ int main()
 	while (!WindowShouldClose())
 	{
 		UpdateCamera(&camera, CAMERA_FREE);
+
 
 		TracingEngine::UploadData(&camera);
 
@@ -68,10 +62,9 @@ int main()
 		deltaTime += GetFrameTime();
 	}
 
-	UnloadModel(box);
-	UnloadModel(plane);
 
 	TracingEngine::Unload();
 
 	CloseWindow();
 }
+
