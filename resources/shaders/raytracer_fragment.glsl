@@ -353,6 +353,7 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 Ray offsetRay(Ray ray, float offsetStrength, inout int rngState)
 {
 	ray.direction += normalize(randomDirection(rngState)) * offsetStrength;
+	ray.invDirection = 1 / ray.direction;
 	return ray;
 }
 

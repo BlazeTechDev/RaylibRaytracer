@@ -126,7 +126,7 @@ private:
 	inline static float blur;
 
 	inline static std::vector<Node> nodes;
-	inline static int maxDepth = 14;
+	inline static int maxDepth = 13;
 
 	inline static Node root;
 

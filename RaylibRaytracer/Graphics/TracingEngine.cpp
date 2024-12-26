@@ -146,11 +146,8 @@ void TracingEngine::GrowToInclude(PaddedBoundingBox* box, Vector3 point)
 
 	Vector3 center = BoundingBoxCenter(box);
 
-	Vector3 paddingMin = (point - center) / 2;
-	Vector3 paddingMax = (point - center) / 2;
-
-	box->min = Vector3Min(temp.min, point + paddingMin);
-	box->max = Vector3Max(temp.max, point + paddingMax);
+	box->min = Vector3Min(temp.min, point);
+	box->max = Vector3Max(temp.max, point);
 }
 
 void TracingEngine::GrowToIncludeTriangle(PaddedBoundingBox* box, Triangle triangle)

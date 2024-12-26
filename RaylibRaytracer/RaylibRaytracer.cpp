@@ -25,7 +25,7 @@ int main()
 
 	DisableCursor();
 
-	TracingEngine::Initialize(Vector2(2048, 1024), 10, 10, 0.001f);
+	TracingEngine::Initialize(Vector2(2048, 1024), 10, 10, 0.0005f);
 
 	TracingEngine::skyMaterial = SkyMaterial{ WHITE, SKYBLUE, BROWN, ORANGE, Vector3(-0.5f, -1, -0.5f), 1, 0.5 };
 

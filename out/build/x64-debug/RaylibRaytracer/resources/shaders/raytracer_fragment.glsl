@@ -200,7 +200,7 @@ float RayBoundingBox(Ray ray, vec3 boundingMin, vec3 boundingMax) {
 
 HitInfo RayBVH(Ray ray, HitInfo state, int nodeOffset, RayTracingMaterial material)
 {
-	int nodeStack[12];
+	int nodeStack[32];
 	int stackIndex = 0;
 	nodeStack[stackIndex++] = nodeOffset;
 
@@ -353,6 +353,7 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 Ray offsetRay(Ray ray, float offsetStrength, inout int rngState)
 {
 	ray.direction += normalize(randomDirection(rngState)) * offsetStrength;
+	ray.invDirection = 1 / ray.direction;
 	return ray;
 }
 
