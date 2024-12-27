@@ -199,11 +199,14 @@ float RayBoundingBox(Ray ray, vec3 boundingMin, vec3 boundingMax) {
 	return didHit ? dstNear : 100000000;
 }
 
-HitInfo RayBVH(Ray ray, HitInfo state, int nodeOffset, RayTracingMaterial material)
+HitInfo RayBVH(Ray ray, int nodeOffset, RayTracingMaterial material)
 {
 	int nodeStack[32];
 	int stackIndex = 0;
 	nodeStack[stackIndex++] = nodeOffset;
+
+	HitInfo result;
+	result.distance = 100000000;
 
 	while (stackIndex > 0)
 	{
@@ -217,10 +220,9 @@ HitInfo RayBVH(Ray ray, HitInfo state, int nodeOffset, RayTracingMaterial materi
 
 				HitInfo hitInfo = RayTriangle(ray, tri);
 
-				if (hitInfo.didHit && hitInfo.distance < state.distance)
+				if (hitInfo.didHit && hitInfo.distance < result.distance)
 				{
-					state = hitInfo;
-					state.material = material;
+					result = hitInfo;
 				}
 			}
 		}
@@ -240,15 +242,15 @@ HitInfo RayBVH(Ray ray, HitInfo state, int nodeOffset, RayTracingMaterial materi
 			int childIndexNear = isNearestA ? childIndexA : childIndexB;
 			int childIndexFar = isNearestA ? childIndexB : childIndexA;
 
-			if (dstFar < state.distance) nodeStack[stackIndex++] = childIndexFar;
-			if (dstNear < state.distance) nodeStack[stackIndex++] = childIndexNear;
+			if (dstFar < result.distance) nodeStack[stackIndex++] = childIndexFar;
+			if (dstNear < result.distance) nodeStack[stackIndex++] = childIndexNear;
 		}
 	}
 
-	return state;
+	return result;
 }
 
-HitInfo CalculateRayCollision(Ray ray)
+HitInfo CalculateRayCollision(Ray ray, int bounce)
 {
 	HitInfo closestHit;
 	closestHit.didHit = false;
@@ -266,11 +268,20 @@ HitInfo CalculateRayCollision(Ray ray)
 			closestHit.material = sphere.material;
 		}
 	}
-	
+
 	for (int i = 0; i < meshes.length(); i++)
 	{
 		RayTracingMaterial mat = meshes[i].material;
-		closestHit = RayBVH(ray, closestHit, meshes[i].rootNodeIndex, mat);
+		HitInfo hit = RayBVH(ray, meshes[i].rootNodeIndex, mat);
+
+		if (hit.didHit && hit.distance < closestHit.distance)
+		{
+			closestHit.didHit = true;
+			closestHit.distance = hit.distance;
+			closestHit.hitNormal = hit.hitNormal;
+			closestHit.hitPoint = ray.origin + ray.direction * hit.distance;
+			closestHit.material = mat;
+		}
 	}
 
 	return closestHit;
@@ -325,13 +336,17 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 
 	for (int i = 0; i <= maxBounces; i++)
 	{
-		HitInfo hitInfo = CalculateRayCollision(ray);
+		HitInfo hitInfo = CalculateRayCollision(ray, i);
 		if (hitInfo.didHit)
 		{
 			ray.origin = hitInfo.hitPoint;
-			vec3 specularDirection = reflect(hitInfo.hitNormal, ray.direction);
+			vec3 specularDirection = reflect(ray.direction, hitInfo.hitNormal);
 			vec3 diffuseDirection = normalize(hitInfo.hitNormal + randomHemisphereDirection(hitInfo.hitNormal, rngState));
-			ray.direction = mix(diffuseDirection, specularDirection, hitInfo.material.smoothness);
+			
+			float brdfLambertian = ((hitInfo.material.smoothness * 3.1) / 3.1415927) * dot(hitInfo.hitNormal, -skyMaterial.sunDirection);
+			
+			ray.direction = normalize(mix(diffuseDirection, specularDirection, brdfLambertian));
+			ray.invDirection = 1 / ray.direction;
 
 			RayTracingMaterial material = hitInfo.material;
 			vec3 emittedLight = material.emission.rgb * material.emission.a;

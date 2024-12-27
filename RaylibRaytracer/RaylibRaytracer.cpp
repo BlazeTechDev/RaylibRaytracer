@@ -25,7 +25,7 @@ int main()
 
 	DisableCursor();
 
-	TracingEngine::Initialize(Vector2(2048, 1024), 10, 10, 0.001f);
+	TracingEngine::Initialize(Vector2(2048, 1024), 10, 4, 0.001f);
 
 	TracingEngine::skyMaterial = SkyMaterial{ WHITE, SKYBLUE, BROWN, WHITE, Vector3(-0.5f, -1, -0.5f), 1, 0.5 };
 
@@ -42,11 +42,18 @@ int main()
 	TracingEngine::spheres.push_back({ Vector3(3, 1, 0), 1, white });
 
 	Model dragon = LoadModel("resources/meshes/stanford_dragon.obj");
-	TracingEngine::UploadRaylibModel(dragon, white, false, 14);
+	TracingEngine::UploadRaylibModel(dragon, metal, false, 14);
 
+	Model monkey = LoadModel("resources/meshes/monkey.obj");
+	monkey.transform = MatrixTranslate(-3, 1, 0);
+	TracingEngine::UploadRaylibModel(monkey, red2, false, 8);
 
 	Model floor = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
-	TracingEngine::UploadRaylibModel(floor, grey, true, 0);
+	TracingEngine::UploadRaylibModel(floor, metal, true, 0);
+
+	Model wall = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
+	wall.transform = MatrixRotateX(PI / 2) * MatrixTranslate(0, 0, -3);
+	TracingEngine::UploadRaylibModel(wall, white, true, 0);
 
 	TracingEngine::UploadStaticData();
 
@@ -66,8 +73,10 @@ int main()
 		deltaTime += GetFrameTime();
 	}
 	
+	UnloadModel(monkey);
 	UnloadModel(dragon);
 	UnloadModel(floor);
+	UnloadModel(wall);
 
 	TracingEngine::Unload();
 
