@@ -96,7 +96,7 @@ struct SphereBuffer
 
 struct TriangleBuffer
 {
-	Triangle triangles[50000];
+	Triangle triangles[500000];
 };
 
 struct MeshBuffer
@@ -106,7 +106,7 @@ struct MeshBuffer
 
 struct NodeBuffer
 {
-	Node nodes[500000];
+	Node nodes[1000000];
 };
 
 class TracingEngine
