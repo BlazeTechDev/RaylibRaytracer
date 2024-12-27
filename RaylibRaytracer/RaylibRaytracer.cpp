@@ -25,33 +25,29 @@ int main()
 
 	DisableCursor();
 
-	TracingEngine::Initialize(Vector2(2048, 1024), 10, 10, 0.0005f);
+	TracingEngine::Initialize(Vector2(2048, 1024), 10, 10, 0.001f);
 
 	TracingEngine::skyMaterial = SkyMaterial{ WHITE, SKYBLUE, BROWN, WHITE, Vector3(-0.5f, -1, -0.5f), 1, 0.5 };
 
 	RaytracingMaterial red = { Vector4(1,1,1,1), Vector4(1,0,0,10), Vector4(0,0,0,0) };
-	RaytracingMaterial red2 = { Vector4(1,0.5f,0.5f,1), Vector4(0,0,0,0), Vector4(0,0,0,0) };
+	RaytracingMaterial red2 = { Vector4(1,0.5f,0.5f,0), Vector4(0,0,0,0), Vector4(0,0,0,0) };
 	RaytracingMaterial green = { Vector4(1,1,1,1), Vector4(0,0,1,10), Vector4(0,0,0,0) };
 	RaytracingMaterial blue = { Vector4(1,1,1,1), Vector4(0,1,0,10), Vector4(0,0,0,0) };
 	RaytracingMaterial white = { Vector4(1,1,1,1), Vector4(0,0,0,0), Vector4(0,0,0,0) };
+	RaytracingMaterial grey = { Vector4(0.5f,0.5f,0.5f,1), Vector4(0,0,0,0), Vector4(0,0,0,0) };
+	RaytracingMaterial light = { Vector4(1,0.8f,0.7f,1), Vector4(1,1,1,0.5f), Vector4(0,0,0,0) };
 	RaytracingMaterial metal = { Vector4(1,1,1,1), Vector4(0,0,0,0), Vector4(0,1,0,0) };
 
-	TracingEngine::spheres.push_back({ Vector3(0, 4, 0), 0.2, red });
-	TracingEngine::spheres.push_back({ Vector3(2, 2, 0), 0.2, green });
-	TracingEngine::spheres.push_back({ Vector3(-2, 2, 0), 0.2, blue });
-	TracingEngine::spheres.push_back({ Vector3(-5, 2, 0), 1, white });
+	TracingEngine::spheres.push_back({ Vector3(0, 50, 100), 50, light });
+	TracingEngine::spheres.push_back({ Vector3(3, 1, 0), 1, white });
 
-	Model monkey = LoadModel("resources/meshes/stanford_dragon.obj");
-	monkey.transform = MatrixTranslate(0, 0.1f, 0);
-	TracingEngine::UploadRaylibModel(monkey, white, false, 14);
+	Model dragon = LoadModel("resources/meshes/stanford_dragon.obj");
+	TracingEngine::UploadRaylibModel(dragon, white, false, 14);
 
-	Model monkey2 = LoadModel("resources/meshes/monkey.obj");
-	monkey2.transform = MatrixTranslate(0, 1, 5);
-	TracingEngine::UploadRaylibModel(monkey2, white, false, 4);
 
 	Model floor = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
-	TracingEngine::UploadRaylibModel(floor, red2, true, 0);
-	
+	TracingEngine::UploadRaylibModel(floor, grey, true, 0);
+
 	TracingEngine::UploadStaticData();
 
 	while (!WindowShouldClose())
@@ -70,8 +66,7 @@ int main()
 		deltaTime += GetFrameTime();
 	}
 	
-	UnloadModel(monkey2);
-	UnloadModel(monkey);
+	UnloadModel(dragon);
 	UnloadModel(floor);
 
 	TracingEngine::Unload();

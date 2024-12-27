@@ -20,6 +20,12 @@ struct TracingParams
 		pause;
 };
 
+struct PostParams
+{
+	int resolution,
+		denoise;
+};
+
 struct SkyMaterial
 {
 	Color skyColorZenith;
@@ -118,6 +124,7 @@ private:
 	inline static RenderTexture2D raytracingRenderTexture;
 	inline static RenderTexture2D previouseFrameRenderTexture;
 	inline static TracingParams tracingParams;
+	inline static PostParams postParams;
 	inline static Vector2 resolution;
 
 	inline static int numRenderedFrames;

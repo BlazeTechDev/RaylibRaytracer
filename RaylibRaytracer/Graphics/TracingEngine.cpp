@@ -16,6 +16,7 @@ void TracingEngine::Initialize(Vector2 resolution, int maxBounces, int raysPerPi
 	previouseFrameRenderTexture = LoadRenderTexture(resolution.x, resolution.y);
 
 	raytracingShader = LoadShader(0, TextFormat("resources/shaders/raytracer_fragment.glsl", 430));
+	postShader = LoadShader(0, TextFormat("resources/shaders/post_fragment.glsl", 430));
 
 	tracingParams.cameraPosition = GetShaderLocation(raytracingShader, "cameraPosition");
 	tracingParams.cameraDirection = GetShaderLocation(raytracingShader, "cameraDirection");
@@ -30,9 +31,14 @@ void TracingEngine::Initialize(Vector2 resolution, int maxBounces, int raysPerPi
 	tracingParams.blur = GetShaderLocation(raytracingShader, "blur");
 	tracingParams.pause = GetShaderLocation(raytracingShader, "pause");
 
+	postParams.resolution = GetShaderLocation(postShader, "resolution");
+	postParams.denoise = GetShaderLocation(postShader, "denoise");
+
 	Vector2 screenCenter = Vector2(resolution.x / 2.0f, resolution.y / 2.0f);
 	SetShaderValue(raytracingShader, tracingParams.screenCenter, &screenCenter, SHADER_UNIFORM_VEC2);
 	SetShaderValue(raytracingShader, tracingParams.resolution, &resolution, SHADER_UNIFORM_VEC2);
+
+	SetShaderValue(postShader, postParams.resolution, &resolution, SHADER_UNIFORM_VEC2);
 
 	SetShaderValue(raytracingShader, tracingParams.raysPerPixel, &raysPerPixel, SHADER_UNIFORM_INT);
 	SetShaderValue(raytracingShader, tracingParams.maxBounces, &maxBounces, SHADER_UNIFORM_INT);
@@ -400,6 +406,8 @@ void TracingEngine::UploadData(Camera* camera)
 
 	SetShaderValue(raytracingShader, tracingParams.denoise, &denoise, SHADER_UNIFORM_INT);
 	SetShaderValue(raytracingShader, tracingParams.pause, &pause, SHADER_UNIFORM_INT);
+
+	SetShaderValue(postShader, postParams.denoise, &denoise, SHADER_UNIFORM_INT);
 }
 
 void TracingEngine::Render(Camera* camera)
@@ -417,9 +425,11 @@ void TracingEngine::Render(Camera* camera)
 	EndTextureMode();
 
 	BeginDrawing();
+	BeginShaderMode(postShader);
 	ClearBackground(BLACK);
 
 	DrawTextureRec(raytracingRenderTexture.texture, Rectangle(0, 0, (float)resolution.x, (float)-resolution.y), Vector2(0, 0), WHITE);
+	EndShaderMode();
 
 	if (debug)
 	{
