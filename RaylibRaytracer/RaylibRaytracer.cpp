@@ -25,7 +25,7 @@ int main()
 
 	DisableCursor();
 
-	TracingEngine::Initialize(Vector2(2048, 1024), 10, 4, 0.001f);
+	TracingEngine::Initialize(Vector2(2048, 1024), 5, 10, 0.001f);
 
 	TracingEngine::skyMaterial = SkyMaterial{ WHITE, SKYBLUE, BROWN, WHITE, Vector3(-0.5f, -1, -0.5f), 1, 0.5 };
 
@@ -49,10 +49,10 @@ int main()
 	TracingEngine::UploadRaylibModel(monkey, red2, false, 8);
 
 	Model floor = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
-	TracingEngine::UploadRaylibModel(floor, metal, true, 0);
+	TracingEngine::UploadRaylibModel(floor, white, true, 0);
 
 	Model wall = LoadModelFromMesh(GenMeshPlane(50, 50, 1, 1));
-	wall.transform = MatrixRotateX(PI / 2) * MatrixTranslate(0, 0, -3);
+	wall.transform = MatrixRotateX(PI / 2) * MatrixTranslate(0, 0, -7);
 	TracingEngine::UploadRaylibModel(wall, white, true, 0);
 
 	TracingEngine::UploadStaticData();
