@@ -343,7 +343,7 @@ vec3 trace(Ray ray, inout int rngState, int maxBounces)
 			vec3 specularDirection = reflect(ray.direction, hitInfo.hitNormal);
 			vec3 diffuseDirection = normalize(hitInfo.hitNormal + randomHemisphereDirection(hitInfo.hitNormal, rngState));
 			
-			float brdfLambertian = ((hitInfo.material.smoothness * 3.1) / 3.1415927) * dot(hitInfo.hitNormal, -skyMaterial.sunDirection);
+			float brdfLambertian = hitInfo.material.smoothness;
 			
 			ray.direction = normalize(mix(diffuseDirection, specularDirection, brdfLambertian));
 			ray.invDirection = 1 / ray.direction;
