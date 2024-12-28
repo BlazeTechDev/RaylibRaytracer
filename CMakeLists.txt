@@ -10,6 +10,7 @@ if (POLICY CMP0141)
 endif()
 
 project ("RaylibRaytracers")
+
 add_subdirectory ("vendor/raylib")
 add_subdirectory ("RaylibRaytracer")
 
