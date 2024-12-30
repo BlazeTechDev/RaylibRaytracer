@@ -14,4 +14,4 @@ project ("RaylibRaytracers")
 add_subdirectory ("vendor/raylib")
 add_subdirectory ("RaylibRaytracer")
 
-file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/resources" DESTINATION "${PROJECT_BINARY_DIR}/RaylibRaytracer")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/resources" DESTINATION "${PROJECT_BINARY_DIR}/${PROJECT_NAME}")
