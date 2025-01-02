@@ -1,69 +1,80 @@
 #version 430
 
-#define SAMPLES 80  // HIGHER = NICER = SLOWER
-#define DISTRIBUTION_BIAS 0.6 // between 0. and 1.
-#define PIXEL_MULTIPLIER  1.5 // between 1. and 3. (keep low)
-#define INVERSE_HUE_TOLERANCE 20.0 // (2. - 30.)
-
-#define GOLDEN_ANGLE 2.3999632 //3PI-sqrt(5)PI
-
-#define pow(a,b) pow(max(a,0.),b) // @morimea
-
-mat2 sample2D = mat2(cos(GOLDEN_ANGLE), sin(GOLDEN_ANGLE), -sin(GOLDEN_ANGLE), cos(GOLDEN_ANGLE));
+#define INV_SQRT_OF_2PI 0.39894228040143267793994605993439  // 1.0/SQRT_OF_2PI
+#define INV_PI 0.31830988618379067153776752674503
 
 in vec2 fragTexCoord;
 
 uniform sampler2D texture0;
 
 uniform vec2 resolution;
-uniform bool denoise;
 
 out vec4 out_color;
 
-vec3 sirBirdDenoise(sampler2D imageTexture, vec2 uv, vec2 imageResolution) {
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  Copyright (c) 2018-2019 Michele Morrone
+//  All rights reserved.
+//
+//  https://michelemorrone.eu - https://BrutPitt.com
+//
+//  me@michelemorrone.eu - brutpitt@gmail.com
+//  twitter: @BrutPitt - github: BrutPitt
+//  
+//  https://github.com/BrutPitt/glslSmartDeNoise/
+//
+//  This software is distributed under the terms of the BSD 2-Clause license
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    vec3 denoisedColor = vec3(0.);
+#define INV_SQRT_OF_2PI 0.39894228040143267793994605993439  // 1.0/SQRT_OF_2PI
+#define INV_PI 0.31830988618379067153776752674503
 
-    const float sampleRadius = sqrt(float(SAMPLES));
-    const float sampleTrueRadius = 0.5 / (sampleRadius * sampleRadius);
-    vec2        samplePixel = vec2(1.0 / imageResolution.x, 1.0 / imageResolution.y);
-    vec3        sampleCenter = texture(imageTexture, uv).rgb;
-    vec3        sampleCenterNorm = normalize(sampleCenter);
-    float       sampleCenterSat = length(sampleCenter);
+//  smartDeNoise - parameters
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//  sampler2D tex     - sampler image / texture
+//  vec2 uv           - actual fragment coord
+//  float sigma  >  0 - sigma Standard Deviation
+//  float kSigma >= 0 - sigma coefficient 
+//      kSigma * sigma  -->  radius of the circular kernel
+//  float threshold   - edge sharpening threshold 
 
-    float  influenceSum = 0.0;
-    float brightnessSum = 0.0;
+vec4 smartDeNoise(sampler2D tex, vec2 uv, float sigma, float kSigma, float threshold)
+{
+    float radius = round(kSigma * sigma);
+    float radQ = radius * radius;
 
-    vec2 pixelRotated = vec2(0., 1.);
+    float invSigmaQx2 = .5 / (sigma * sigma);      // 1.0 / (sigma^2 * 2.0)
+    float invSigmaQx2PI = INV_PI * invSigmaQx2;    // 1.0 / (sqrt(PI) * sigma)
 
-    for (float x = 0.0; x <= float(SAMPLES); x++) {
+    float invThresholdSqx2 = .5 / (threshold * threshold);     // 1.0 / (sigma^2 * 2.0)
+    float invThresholdSqrt2PI = INV_SQRT_OF_2PI / threshold;   // 1.0 / (sqrt(2*PI) * sigma)
 
-        pixelRotated *= sample2D;
+    vec4 centrPx = texture(tex, uv);
 
-        vec2  pixelOffset = PIXEL_MULTIPLIER * pixelRotated * sqrt(x) * 0.5;
-        float pixelInfluence = 1.0 - sampleTrueRadius * pow(dot(pixelOffset, pixelOffset), DISTRIBUTION_BIAS);
-        pixelOffset *= samplePixel;
+    float zBuff = 0.0;
+    vec4 aBuff = vec4(0.0);
+    vec2 size = vec2(textureSize(tex, 0));
 
-        vec3 thisDenoisedColor =
-            texture(imageTexture, uv + pixelOffset).rgb;
+    for (float x = -radius; x <= radius; x++) {
+        float pt = sqrt(radQ - x * x);  // pt = yRadius: have circular trend
+        for (float y = -pt; y <= pt; y++) {
+            vec2 d = vec2(x, y);
 
-        pixelInfluence *= pixelInfluence * pixelInfluence;
-        /*
-            HUE + SATURATION FILTER
-        */
-        pixelInfluence *=
-            pow(0.5 + 0.5 * dot(sampleCenterNorm, normalize(thisDenoisedColor)), INVERSE_HUE_TOLERANCE)
-            * pow(1.0 - abs(length(thisDenoisedColor) - length(sampleCenterSat)), 8.);
+            float blurFactor = exp(-dot(d, d) * invSigmaQx2) * invSigmaQx2PI;
 
-        influenceSum += pixelInfluence;
-        denoisedColor += thisDenoisedColor * pixelInfluence;
+            vec4 walkPx = texture(tex, uv + d / size);
+
+            vec4 dC = walkPx - centrPx;
+            float deltaFactor = exp(-dot(dC, dC) * invThresholdSqx2) * invThresholdSqrt2PI * blurFactor;
+
+            zBuff += deltaFactor;
+            aBuff += deltaFactor * walkPx;
+        }
     }
-
-    return denoisedColor / influenceSum;
-
+    return aBuff / zBuff;
 }
 
 void main()
 {
-    out_color = texture(texture0, fragTexCoord);
+    out_color = smartDeNoise(texture0, fragTexCoord, 5.0, 2.0, 0.04);
 }

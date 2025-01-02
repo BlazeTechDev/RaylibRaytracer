@@ -188,7 +188,7 @@ void TracingEngine::UploadSky()
 
 	Vector4 groundColor = ColorToVector4(skyMaterial.groundColor);
 	SetShaderValue(raytracingShader, groundColorLocation, &groundColor, SHADER_UNIFORM_VEC4);   // Set shader uniform value vector
-	
+
 	Vector4 sunColor = ColorToVector4(skyMaterial.sunColor);
 	SetShaderValue(raytracingShader, sunColorLocation, &sunColor, SHADER_UNIFORM_VEC4);   // Set shader uniform value vector
 
@@ -210,9 +210,9 @@ void TracingEngine::GenerateBVHS()
 		bounds.max = Vector3(mesh.boundingMax.x, mesh.boundingMax.y, mesh.boundingMax.z);
 
 		Node root = { .bounds = bounds, .triangleIndex = mesh.firstTriangleIndex, .numTriangles = mesh.numTriangles };
-		
+
 		nodes.push_back(root);
-		
+
 		meshes[i].rootNodeIndex = nodes.size() - 1;
 
 		triangleOffset += mesh.numTriangles;
@@ -357,7 +357,7 @@ void TracingEngine::UploadRaylibModel(Model model, RaytracingMaterial material, 
 			}
 		}
 
-		RaytracingMesh rmesh = { firstTriIndex, mesh.triangleCount, 0, bvhDepth, material, Vector4(bounds.min.x, bounds.min.y, bounds.min.z, 0), Vector4(bounds.max.x, bounds.max.y, bounds.max.z, 0)};
+		RaytracingMesh rmesh = { firstTriIndex, mesh.triangleCount, 0, bvhDepth, material, Vector4(bounds.min.x, bounds.min.y, bounds.min.z, 0), Vector4(bounds.max.x, bounds.max.y, bounds.max.z, 0) };
 
 		TracingEngine::meshes.push_back(rmesh);
 	}
@@ -420,16 +420,23 @@ void TracingEngine::Render(Camera* camera)
 
 	DrawTextureRec(previouseFrameRenderTexture.texture, Rectangle(0, 0, (float)resolution.x, (float)-resolution.y), Vector2(0, 0), WHITE);
 	//DrawRectangleRec(Rectangle(0, 0, (float)resolution.x, (float)resolution.y), WHITE);
-	
+
 	EndShaderMode();
 	EndTextureMode();
 
 	BeginDrawing();
-	BeginShaderMode(postShader);
 	ClearBackground(BLACK);
 
-	DrawTextureRec(raytracingRenderTexture.texture, Rectangle(0, 0, (float)resolution.x, (float)-resolution.y), Vector2(0, 0), WHITE);
-	EndShaderMode();
+	if (denoise && pause)
+	{
+		BeginShaderMode(postShader);
+		DrawTextureRec(raytracingRenderTexture.texture, Rectangle(0, 0, (float)resolution.x, (float)-resolution.y), Vector2(0, 0), WHITE);
+		EndShaderMode();
+	}
+	else
+	{
+		DrawTextureRec(raytracingRenderTexture.texture, Rectangle(0, 0, (float)resolution.x, (float)-resolution.y), Vector2(0, 0), WHITE);
+	}
 
 	if (debug)
 	{
@@ -474,6 +481,11 @@ void TracingEngine::DrawDebug(Camera* camera)
 	DrawFPS(10, 10);
 	DrawText(TextFormat("triangles: %i", triangles.size()), 10, 30, 20, RED);
 	DrawText(TextFormat("nodes: %i", nodes.size()), 10, 50, 20, RED);
+
+	if (debug) DrawText("DEBUG MODE ACTIVE", 10, 70, 20, WHITE);
+	if (!pause && denoise) DrawText("TEMPORAL DENOISING ACTIVE", 10, 90, 20, WHITE);
+	if (pause && denoise) DrawText("STATIC DENOISING ACTIVE", 10, 90, 20, WHITE);
+	if (pause && !denoise) DrawText("PAUSED", 10, 90, 20, WHITE);
 }
 
 void TracingEngine::Unload()
